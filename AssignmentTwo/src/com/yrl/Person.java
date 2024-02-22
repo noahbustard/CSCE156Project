@@ -14,6 +14,7 @@ public class Person {
 		this.uuid = uuid;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.address = address;
 	}
 	
 	public Person(String uuid, String firstName, String lastName, Address address, ArrayList<String> emails) {
@@ -40,6 +41,12 @@ public class Person {
 	
 	public ArrayList<String> getEmails() {
 		return emails;
+	}
+
+	@Override
+	public String toString() {
+		return "Person [uuid=" + uuid + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + this.getAddress()
+				+ ", emails=" + emails + "]";
 	}
 
 	

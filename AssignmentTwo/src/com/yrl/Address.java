@@ -13,6 +13,11 @@ public class Address {
 		this.zip = zip;
 	}
 
+	@Override
+	public String toString() {
+		return street + ", " + city + ", " + state + ", " + zip;
+	}
+
 	public String getStreet() {
 		return street;
 	}

@@ -13,6 +13,11 @@ public class Item {
 		this.basePrice = basePrice;
 	}
 
+	@Override
+	public String toString() {
+		return "Item [code=" + code + ", type=" + type + ", name=" + name + ", basePrice=" + basePrice + "]";
+	}
+
 	public String getCode() {
 		return code;
 	}
