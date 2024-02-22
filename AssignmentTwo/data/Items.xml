@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<items>
+<product>
+  <code>e003</code>
+  <name>iPhone 11 hardcase</name>
+  <price>34.95</price>
+</product>
+<voicePlan>
+  <code>p003</code>
+  <name>Unlimited Daily</name>
+  <periodCost>50.0</periodCost>
+</voicePlan>
+<dataPlan>
+  <code>p002</code>
+  <name>4G Basic</name>
+  <costPerGB>0.43</costPerGB>
+</dataPlan>
+<product>
+  <code>e001</code>
+  <name>iPhone 11</name>
+  <price>1200.0</price>
+</product>
+<dataPlan>
+  <code>p001</code>
+  <name>5G Deluxe</name>
+  <costPerGB>1.99</costPerGB>
+</dataPlan>
+<product>
+  <code>e002</code>
+  <name>Samsung Galaxy A21</name>
+  <price>99.99</price>
+</product>
+<service>
+  <code>s003</code>
+  <name>Delivery</name>
+  <costPerHour>59.99</costPerHour>
+</service>
+<voicePlan>
+  <code>p004</code>
+  <name>Unlimited talk/300 Text</name>
+  <periodCost>70.0</periodCost>
+</voicePlan>
+<service>
+  <code>s002</code>
+  <name>Router Install</name>
+  <costPerHour>120.99</costPerHour>
+</service>
+<service>
+  <code>s001</code>
+  <name>Screen Repair</name>
+  <costPerHour>75.5</costPerHour>
+</service>
+</items>

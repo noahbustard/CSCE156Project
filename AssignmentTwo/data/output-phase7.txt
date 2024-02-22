@@ -1,0 +1,23 @@
+Phase 7 output...
++-------------------------------------------------------------------------+
+| Sales by Customer                                                       |
++-------------------------------------------------------------------------+
+Sale       Store      Customer             Salesperson          Total     
+s001       3c0234     Finn, Mertens        Moe, Giovanni        $   1961.17
+s003       25d901     Finn, Mertens        Fionna, Campbell     $      0.00
+s002       3c0234     Marshall, Lee        Moe, Giovanni        $      0.00
++-------------------------------------------------------------------------+
+| Sales by Total                                                          |
++-------------------------------------------------------------------------+
+Sale       Store      Customer             Salesperson          Total     
+s001       3c0234     Finn, Mertens        Moe, Giovanni        $   1961.17
+s002       3c0234     Marshall, Lee        Moe, Giovanni        $      0.00
+s003       25d901     Finn, Mertens        Fionna, Campbell     $      0.00
++-------------------------------------------------------------------------+
+| Sales by Store                                                          |
++-------------------------------------------------------------------------+
+Sale       Store      Customer             Salesperson          Total     
+s003       25d901     Finn, Mertens        Fionna, Campbell     $      0.00
+s001       3c0234     Finn, Mertens        Moe, Giovanni        $   1961.17
+s002       3c0234     Marshall, Lee        Moe, Giovanni        $      0.00
+
