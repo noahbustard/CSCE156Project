@@ -1,4 +1,4 @@
-package unl.soc;
+package com.yrl;
 
 public class Store {
 	int x = 10;
