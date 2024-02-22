@@ -4,9 +4,9 @@ public class Item {
 	private String code;
 	private String type;
 	private String name;
-	private double basePrice;
+	private String basePrice;
 	
-	public Item(String code, String type, String name, double basePrice) {
+	public Item(String code, String type, String name, String basePrice) {
 		this.code = code;
 		this.type = type;
 		this.name = name;
@@ -25,7 +25,7 @@ public class Item {
 		return name;
 	}
 
-	public double getBasePrice() {
+	public String getBasePrice() {
 		return basePrice;
 	}
 }
