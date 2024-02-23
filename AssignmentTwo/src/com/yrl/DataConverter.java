@@ -11,14 +11,20 @@ public class DataConverter {
 
 	public static void main(String args[]) {
 		loadFiles();
+		
 
 	}
-
+	
 	private static void loadFiles() {
 
-		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/Stores.csv", "data/TestCasesOne.csv");
-
+		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/Stores.csv", "data/PersonTestCases.csv");
+		ArrayList<Person> personList = new ArrayList<Person>();
+		ArrayList<Item> itemList = new ArrayList<Item>();
+		ArrayList<Store> storeList = new ArrayList<Store>();
+		
 		Scanner s = null;
+		
+		
 		for (String file : files) {
 			try {
 				s = new Scanner(new File(file));
@@ -45,15 +51,21 @@ public class DataConverter {
 						for (int i = 7; i < tokens.length; i++)
 							emails.add(tokens[i]);
 						Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
-						new Person(tokens[0], tokens[1], tokens[2], a, emails);
+						Person person = new Person(tokens[0], tokens[1], tokens[2], a, emails);
+						personList.add(person);
+						JSONOutputter.toJSON(personList, file);
 					}
 
 				} else if (header.equals("code,type,name,base cost")) {
-					new Item(tokens[0], tokens[1], tokens[2], tokens[3]);
-
+					Item item = new Item(tokens[0], tokens[1], tokens[2], tokens[3]);
+					itemList.add(item);
+					JSONOutputter.toJSON(itemList, file);
+					
 				} else if (header.equals("storeCode,managerUUID,street,city,state,zip")) {
 					Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
-					new Store(tokens[0], tokens[1], a);
+					Store store = new Store(tokens[0], tokens[1], a);
+					storeList.add(store);
+					JSONOutputter.toJSON(storeList, file);
 				}
 			}
 
@@ -61,4 +73,5 @@ public class DataConverter {
 
 		s.close();
 	}
-}
+	}
+	
