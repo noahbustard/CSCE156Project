@@ -1,60 +1,60 @@
 {
-  "code": "e001",
+  "code": "u001",
   "type": "P",
-  "name": "iPhone 11",
-  "basePrice": "1200"
+  "name": "BlackBerry 4",
+  "basePrice": "0.01"
 }
 {
-  "code": "e002",
+  "code": "u002",
   "type": "P",
-  "name": "Samsung Galaxy A21",
-  "basePrice": "99.99"
+  "name": "Iphone X",
+  "basePrice": "999"
 }
 {
-  "code": "e003",
-  "type": "P",
-  "name": "iPhone 11 hardcase",
-  "basePrice": "34.95"
+  "code": "u003",
+  "type": "S",
+  "name": "Water Damage",
+  "basePrice": "100"
 }
 {
-  "code": "s001",
+  "code": "u004",
   "type": "S",
   "name": "Screen Repair",
-  "basePrice": "75.50"
+  "basePrice": "76"
 }
 {
-  "code": "s002",
+  "code": "u005",
   "type": "S",
-  "name": "Router Install",
-  "basePrice": "120.99"
+  "name": "Camera Repair",
+  "basePrice": "200"
 }
 {
-  "code": "s003",
-  "type": "S",
-  "name": "Delivery",
-  "basePrice": "59.99"
-}
-{
-  "code": "p001",
+  "code": "u006",
   "type": "D",
-  "name": "5G Deluxe",
-  "basePrice": "1.99"
+  "name": "LTE Deluxe",
+  "basePrice": "30"
 }
 {
-  "code": "p002",
-  "type": "D",
-  "name": "4G Basic",
-  "basePrice": "0.43"
+  "code": "u007",
+  "type": "P",
+  "name": "Iphone 13",
+  "basePrice": "1400"
 }
 {
-  "code": "p003",
-  "type": "V",
-  "name": "Unlimited Daily",
-  "basePrice": "50"
+  "code": "u008",
+  "type": "P",
+  "name": "Iphone 11",
+  "basePrice": "1100"
 }
 {
-  "code": "p004",
-  "type": "V",
-  "name": "Unlimited talk/300 Text",
-  "basePrice": "70"
+  "code": "u009",
+  "type": "P",
+  "name": "Iphone 14",
+  "basePrice": "1600"
+}
+{
+  "code": "u010",
+  "type": "P",
+  "name": "Iphone 15",
+  "basePrice": "1700"
 }
