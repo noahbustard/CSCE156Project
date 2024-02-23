@@ -1,5 +1,10 @@
 package com.yrl;
-
+/**
+ * @author Noah Bustard
+ * @Author Caden France
+ * 
+ * Date: 2024-02-22
+ */
 public class Item {
 	private String code;
 	private String type;

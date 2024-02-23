@@ -2,6 +2,7 @@ package com.yrl;
 
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -10,9 +11,20 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * @author Noah Bustard
+ * @author Caden France
+ * 
+ * Date: 2024-02-22
+ */
 public class JSONOutputter {
 	
-	
+	/**
+	 * @param list
+	 * @param fileName
+	 * 
+	 * Uses parameters to convert from list to JSON file.
+	 */
 	
 	public static <T> void toJSON(ArrayList<T> list, String fileName) {
 		

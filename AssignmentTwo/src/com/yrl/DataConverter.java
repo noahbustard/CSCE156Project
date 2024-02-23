@@ -7,6 +7,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * @author Noah Bustard
+ * @author Caden France
+ * Date: 2024-02-22
+ * 
+ * Converts data from csv files and sorts them
+ * into corresponding classes
+ */
+
 public class DataConverter {
 
 	public static void main(String args[]) {
@@ -14,7 +23,9 @@ public class DataConverter {
 		
 
 	}
-	
+	/**
+	 * Opens and scans files and sorts data
+	 */
 	private static void loadFiles() {
 
 		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/Stores.csv");

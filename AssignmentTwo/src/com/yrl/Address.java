@@ -1,4 +1,10 @@
 package com.yrl;
+/**
+ * @author Noah Bustard
+ * @author Caden France
+ * 
+ * Date: 2024-02-22
+ */
 
 public class Address {
 	private String street;

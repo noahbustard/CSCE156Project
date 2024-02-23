@@ -1,6 +1,12 @@
 package com.yrl;
 
 import java.util.ArrayList;
+/**
+ * @author Noah Bustard
+ * @author Caden France
+ * 
+ * Date: 2024-02-22
+ */
 
 public class Person {
 	private String uuid;

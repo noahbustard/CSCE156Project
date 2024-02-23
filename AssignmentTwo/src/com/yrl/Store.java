@@ -1,5 +1,12 @@
 package com.yrl;
 
+/**
+ * @author Noah Bustard
+ * @author Caden France
+ * 
+ * Date: 2024-02-22
+ */
+
 public class Store {
 	private String code;
 	private String managerUUID;
