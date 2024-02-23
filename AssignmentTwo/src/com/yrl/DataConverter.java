@@ -16,7 +16,7 @@ public class DataConverter {
 
 	private static void loadFiles() {
 
-		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/Stores.csv");
+		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/Stores.csv", "data/TestCasesOne.csv");
 
 		Scanner s = null;
 		for (String file : files) {
