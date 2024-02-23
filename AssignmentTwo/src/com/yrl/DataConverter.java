@@ -64,7 +64,7 @@ public class DataConverter {
 						Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
 						Person person = new Person(tokens[0], tokens[1], tokens[2], a, emails);
 						personList.add(person);
-						JSONOutputter.toJSON(personList, file);
+					JSONOutputter.toJSON(personList, file);
 					}
 
 				} else if (header.equals("code,type,name,base cost")) {
