@@ -16,7 +16,7 @@ public class DataConverter {
 
 	private static void loadFiles() {
 
-		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/SaleItems.csv");
+		List<String> files = Arrays.asList("data/Items.csv", "data/Persons.csv", "data/Stores.csv");
 
 		Scanner s = null;
 		for (String file : files) {
@@ -36,11 +36,11 @@ public class DataConverter {
 				String tokens[] = line.split(",");
 
 				if (header.equals("uuid,firstName,lastName,street,city,state,zip,email(s)")) {
-					if (tokens.length == 6) {
+					if (tokens.length == 7) {
 						Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
 						new Person(tokens[0], tokens[1], tokens[2], a);
 
-					} else if (tokens.length > 6) {
+					} else if (tokens.length > 7) {
 						ArrayList<String> emails = new ArrayList<String>();
 						for (int i = 7; i < tokens.length; i++)
 							emails.add(tokens[i]);
@@ -53,8 +53,7 @@ public class DataConverter {
 
 				} else if (header.equals("storeCode,managerUUID,street,city,state,zip")) {
 					Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
-					Store st = new Store(tokens[0], tokens[1], a);
-					System.out.println(st);
+					new Store(tokens[0], tokens[1], a);
 				}
 			}
 
