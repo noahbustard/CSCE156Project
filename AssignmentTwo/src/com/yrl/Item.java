@@ -44,9 +44,9 @@ public class Item {
 	public String getBasePrice() {
 		return basePrice;
 	}
+
 	/**
-	 * Takes in data from file and proccesses it
-	 * by putting it into a list of items
+	 * Takes in data from file and proccesses it by putting it into a list of items
 	 * 
 	 */
 	public static ArrayList<Item> loadData() {
@@ -65,9 +65,10 @@ public class Item {
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
 
-			Item item = new Item(tokens[0], tokens[1], tokens[2], tokens[3]);
-			itemList.add(item);
-
+			if (tokens.length == 4) {
+				Item item = new Item(tokens[0], tokens[1], tokens[2], tokens[3]);
+				itemList.add(item);
+			}
 		}
 		s.close();
 		return itemList;

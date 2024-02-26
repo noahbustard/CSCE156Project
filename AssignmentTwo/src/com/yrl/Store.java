@@ -55,11 +55,12 @@ public class Store {
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
-
-			Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
-			Store store = new Store(tokens[0], tokens[1], a);
-			storeList.add(store);
-
+			
+			if (tokens.length == 6) {
+				Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
+				Store store = new Store(tokens[0], tokens[1], a);
+				storeList.add(store);
+			}
 		}
 		s.close();
 		return storeList;
