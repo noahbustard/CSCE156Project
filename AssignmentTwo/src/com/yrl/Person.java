@@ -59,7 +59,7 @@ public class Person {
 	}
 
 	/**
-	 * Takes in data from file and proccesses it by putting it into a list of items
+	 * Takes in data from file and processes it by putting it into a list of items
 	 * 
 	 */
 	public static ArrayList<Person> loadData() {

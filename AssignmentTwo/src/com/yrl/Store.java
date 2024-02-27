@@ -36,7 +36,7 @@ public class Store {
 	}
 
 	/**
-	 * Takes in data from file and proccesses it
+	 * Takes in data from file and processes it
 	 * by putting it into a list of stores
 	 * 
 	 */

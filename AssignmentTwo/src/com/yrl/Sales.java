@@ -7,6 +7,14 @@ public class Sales {
 	private String salespersonCode;
 	private String date;
 
+	public Sales(String storeCode, String saleCode, String customerCode, String salespersonCode, String date) {
+		this.storeCode = storeCode;
+		this.saleCode = saleCode;
+		this.customerCode = customerCode;
+		this.salespersonCode = salespersonCode;
+		this.date = date;
+	}
+	
 	public String getSaleCode() {
 		return this.saleCode;
 	}
