@@ -1,13 +1,13 @@
 package com.yrl;
 
-public class Sales {
+public class Sale {
 	private String saleCode;
 	private String storeCode;
 	private String customerCode;
 	private String salespersonCode;
 	private String date;
 
-	public Sales(String storeCode, String saleCode, String customerCode, String salespersonCode, String date) {
+	public Sale(String storeCode, String saleCode, String customerCode, String salespersonCode, String date) {
 		this.storeCode = storeCode;
 		this.saleCode = saleCode;
 		this.customerCode = customerCode;
