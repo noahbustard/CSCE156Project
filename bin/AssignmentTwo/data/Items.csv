@@ -1,0 +1,11 @@
+code,type,name,base cost
+u001,P,BlackBerry 4,0.01
+u002,P,Iphone X,999
+u003,S,Water Damage,100
+u004,S,Screen Repair,76
+u005,S,Camera Repair,200
+u006,D,LTE Deluxe,30
+u007,P,Iphone 13,1400
+u008,P,Iphone 11,1100
+u009,P,Iphone 14,1600
+u010,P,Iphone 15,1700
