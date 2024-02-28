@@ -19,6 +19,5 @@ public class DataConverter {
 		ArrayList<Person> personList = DataLoader.loadPersons();
 		JSONOutputter.toJSON(personList, "data/Persons.csv");
 
-
 	}
 }
