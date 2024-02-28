@@ -1,9 +1,9 @@
 package com.yrl;
 
-public class Product {
+public class Product extends SaleItem{
 
-	public Product() {
-		super();
+	public Product(String saleCode, String itemCode) {
+		super(saleCode, itemCode);
 	}
 	
 }

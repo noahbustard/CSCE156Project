@@ -12,11 +12,11 @@ public class DataConverter {
 
 	public static void main(String args[]) {
 
-		ArrayList<Store> storeList = Store.loadData();
+		ArrayList<Store> storeList = DataLoader.loadStores();
 		JSONOutputter.toJSON(storeList, "data/Stores.csv");
-		ArrayList<Item> itemList = Item.loadData();
+		ArrayList<Item> itemList = DataLoader.loadItems();
 		JSONOutputter.toJSON(itemList, "data/Items.csv");
-		ArrayList<Person> personList = Person.loadData();
+		ArrayList<Person> personList = DataLoader.loadPersons();
 		JSONOutputter.toJSON(personList, "data/Persons.csv");
 
 

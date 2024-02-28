@@ -16,7 +16,5 @@ public class SaleItem {
 	public String getItemCode() {
 		return itemCode;
 	}
-	
-	
 
 }

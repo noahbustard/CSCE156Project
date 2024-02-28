@@ -17,6 +17,5 @@ public class Lease extends SaleItem {
 	public String getEndDate() {
 		return endDate;
 	}
-	
 
 }

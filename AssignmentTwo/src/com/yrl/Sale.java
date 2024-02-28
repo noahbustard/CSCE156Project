@@ -14,7 +14,7 @@ public class Sale {
 		this.salespersonCode = salespersonCode;
 		this.date = date;
 	}
-	
+
 	public String getSaleCode() {
 		return this.saleCode;
 	}

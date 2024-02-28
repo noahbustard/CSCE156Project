@@ -17,4 +17,5 @@ public class Service extends SaleItem {
 	public String getServicemanCode() {
 		return servicemanCode;
 	}
+
 }
