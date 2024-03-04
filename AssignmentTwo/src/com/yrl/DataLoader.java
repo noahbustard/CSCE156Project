@@ -3,6 +3,7 @@ package com.yrl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class DataLoader {
@@ -132,7 +133,6 @@ public class DataLoader {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-
 		s.nextLine();
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
@@ -141,21 +141,17 @@ public class DataLoader {
 			if (tokens[1].charAt(0) == 'e' && tokens.length == 2) {
 				Product product = new Product(tokens[0], tokens[1]);
 				saleItemList.add(product);
-			}
-			else if (tokens[1].charAt(0) == 'e' && tokens.length == 4) {
+			} else if (tokens[1].charAt(0) == 'e' && tokens.length == 4) {
 				Lease lease = new Lease(tokens[0], tokens[1], tokens[2], tokens[3]);
 				saleItemList.add(lease);
-			}
-			else if (tokens[1].charAt(0) == 's') {
+			} else if (tokens[1].charAt(0) == 's') {
 				Service service = new Service(tokens[0], tokens[1], tokens[2], tokens[3]);
 				saleItemList.add(service);
-			}
-			else if (tokens[1].charAt(0) == 'p' &&  tokens.length == 3) {
+			} else if (tokens[1].charAt(0) == 'p' && tokens.length == 3) {
 				DataPlan dataPlan = new DataPlan(tokens[0], tokens[1], tokens[2]);
 				saleItemList.add(dataPlan);
-			}
-			else if (tokens[1].charAt(0) == 'p' && tokens.length == 4) {
-				VoicePlan voicePlan = new VoicePlan(tokens[0], tokens[1], tokens[2],tokens[3]);
+			} else if (tokens[1].charAt(0) == 'p' && tokens.length == 4) {
+				VoicePlan voicePlan = new VoicePlan(tokens[0], tokens[1], tokens[2], tokens[3]);
 				saleItemList.add(voicePlan);
 			}
 		}
