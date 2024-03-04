@@ -17,7 +17,7 @@ import com.google.gson.GsonBuilder;
  * 
  * Date: 2024-02-22
  */
-public class JSONOutputter {
+public class JSONOutput {
 	
 	/**
 	 * @param list

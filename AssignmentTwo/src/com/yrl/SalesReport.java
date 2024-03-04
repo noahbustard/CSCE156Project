@@ -1,6 +1,6 @@
 package com.yrl;
 
-public class CreateReport {
+public class SalesReport {
 	public static void getTotalReport() {
 		return;
 	}
