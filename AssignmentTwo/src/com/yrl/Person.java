@@ -1,5 +1,6 @@
 package com.yrl;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ public class Person {
 	private String firstName;
 	private String lastName;
 	private Address address;
-	private ArrayList<String> emails;
+	private List<String> emails;
 
 	public Person(String uuid, String firstName, String lastName, Address address) {
 		this.uuid = uuid;
@@ -26,7 +27,10 @@ public class Person {
 	public Person(String uuid, String firstName, String lastName, Address address, ArrayList<String> emails) {
 		this(uuid, firstName, lastName, address);
 		this.emails = emails;
+	}
 
+	public Person(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getUuid() {
@@ -45,7 +49,7 @@ public class Person {
 		return address;
 	}
 
-	public ArrayList<String> getEmails() {
+	public List<String> getEmails() {
 		return emails;
 	}
 

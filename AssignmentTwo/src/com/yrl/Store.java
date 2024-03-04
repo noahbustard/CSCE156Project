@@ -9,12 +9,12 @@ package com.yrl;
 
 public class Store {
 	private String code;
-	private String managerUUID;
+	private Person manager;
 	private Address address;
 
-	public Store(String code, String managerUUID, Address address) {
+	public Store(String code, String manager, Address address) {
 		this.code = code;
-		this.managerUUID = managerUUID;
+		this.manager = new Person(manager);
 		this.address = address;
 	}
 
@@ -23,7 +23,7 @@ public class Store {
 	}
 
 	public String getManagerUUID() {
-		return managerUUID;
+		return manager.toString();
 	}
 
 	public Address getAddress() {

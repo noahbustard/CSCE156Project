@@ -1,16 +1,16 @@
 package com.yrl;
 
 public class Service extends SaleItem {
-	private String hoursBilled;
+	private Double hoursBilled;
 	private String servicemanCode;
 
 	public Service(String saleCode, String itemCode, String hoursBilled, String servicemanCode) {
 		super(saleCode, itemCode);
-		this.hoursBilled = hoursBilled;
+		this.hoursBilled = Double.parseDouble(hoursBilled);
 		this.servicemanCode = servicemanCode;
 	}
 
-	public String getHoursBilled() {
+	public Double getHoursBilled() {
 		return hoursBilled;
 	}
 

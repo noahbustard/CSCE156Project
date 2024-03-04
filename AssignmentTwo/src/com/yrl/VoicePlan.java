@@ -2,19 +2,19 @@ package com.yrl;
 
 public class VoicePlan extends SaleItem {
 	private String phoneNumber;
-	private String daysPurchased;
+	private Integer daysPurchased;
 
 	public VoicePlan(String saleCode, String itemCode, String phoneNumber, String daysPurchased) {
 		super(saleCode, itemCode);
 		this.phoneNumber = phoneNumber;
-		this.daysPurchased = daysPurchased;
+		this.daysPurchased = Integer.parseInt(daysPurchased);
 	}
 
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public String getDaysPurchased() {
+	public Integer getDaysPurchased() {
 		return daysPurchased;
 	}
 

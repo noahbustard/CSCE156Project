@@ -80,7 +80,8 @@ public class DataLoader {
 
 			if (tokens.length == 7) {
 				Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
-				new Person(tokens[0], tokens[1], tokens[2], a);
+				Person person = new Person(tokens[0], tokens[1], tokens[2], a);
+				personList.add(person);
 
 			} else if (tokens.length > 7) {
 				ArrayList<String> emails = new ArrayList<String>();

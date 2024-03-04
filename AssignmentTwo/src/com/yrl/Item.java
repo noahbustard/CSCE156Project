@@ -10,13 +10,13 @@ public class Item {
 	private String code;
 	private String type;
 	private String name;
-	private String basePrice;
+	private Double basePrice;
 
 	public Item(String code, String type, String name, String basePrice) {
 		this.code = code;
 		this.type = type;
 		this.name = name;
-		this.basePrice = basePrice;
+		this.basePrice = Double.parseDouble(basePrice);
 	}
 
 	public String getCode() {
@@ -31,7 +31,7 @@ public class Item {
 		return name;
 	}
 
-	public String getBasePrice() {
+	public Double getBasePrice() {
 		return basePrice;
 	}
 }
