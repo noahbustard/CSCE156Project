@@ -37,4 +37,8 @@ public class Lease extends Product {
 		return this.endDate;
 	}
 
+	public String getSaleCode() {
+		return saleCode;
+	}
+
 }

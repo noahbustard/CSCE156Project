@@ -5,9 +5,6 @@ import java.util.ArrayList;
 public class SalesReport {
 	public static void getTotalReport(ArrayList<Sale> saleList, ArrayList<Store> storeList, ArrayList<Item> itemList,
 			ArrayList<Person> personList, ArrayList<SaleItem> saleItemList) {
-		for (Sale s : saleList) {
-
-		}
 	}
 
 	public static void getStoreReport() {
