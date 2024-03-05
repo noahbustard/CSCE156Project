@@ -1,9 +1,16 @@
 package com.yrl;
 
-public class Product extends SaleItem{
+public abstract class Product extends Item {
 
-	public Product(String saleCode, String itemCode) {
-		super(saleCode, itemCode);
+	private Double basePrice;
+
+	public Product(String itemCode, String name, Double basePrice) {
+		super(itemCode, name);
+		this.basePrice = basePrice;
 	}
-	
+
+	public Double getBasePrice() {
+		return this.basePrice;
+	}
+
 }

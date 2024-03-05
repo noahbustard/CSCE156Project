@@ -29,28 +29,30 @@ public class Person {
 		this.emails = emails;
 	}
 
-	public Person(String uuid) {
-		this.uuid = uuid;
-	}
-
 	public String getUuid() {
-		return uuid;
+		return this.uuid;
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public Address getAddress() {
-		return address;
+		return this.address;
 	}
 
 	public List<String> getEmails() {
-		return emails;
+		return this.emails;
+	}
+
+	@Override
+	public String toString() {
+		return "Person uuid=" + uuid + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+				+ ", emails=" + emails;
 	}
 
 }

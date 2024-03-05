@@ -1,9 +1,10 @@
 package com.yrl;
+
 /**
  * @author Noah Bustard
  * @author Caden France
  * 
- * Date: 2024-02-22
+ *         Date: 2024-02-22
  * 
  */
 
@@ -12,7 +13,7 @@ public class Address {
 	private String city;
 	private String state;
 	private String zip;
-	
+
 	public Address(String street, String city, String state, String zip) {
 		this.street = street;
 		this.city = city;
@@ -26,18 +27,18 @@ public class Address {
 	}
 
 	public String getStreet() {
-		return street;
+		return this.street;
 	}
 
 	public String getCity() {
-		return city;
+		return this.city;
 	}
 
 	public String getState() {
-		return state;
+		return this.state;
 	}
 
 	public String getZip() {
-		return zip;
+		return this.zip;
 	}
 }

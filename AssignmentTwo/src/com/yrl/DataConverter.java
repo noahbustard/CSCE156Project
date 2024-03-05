@@ -11,13 +11,9 @@ import java.util.ArrayList;
 public class DataConverter {
 
 	public static void main(String args[]) {
-
-		ArrayList<Store> storeList = DataLoader.loadStores();
-		JSONOutput.toJSON(storeList, "data/Stores.csv");
-		ArrayList<Item> itemList = DataLoader.loadItems();
-		JSONOutput.toJSON(itemList, "data/Items.csv");
 		ArrayList<Person> personList = DataLoader.loadPersons();
-		JSONOutput.toJSON(personList, "data/Persons.csv");
+		ArrayList<Store> storeList = DataLoader.loadStores(personList);
+		ArrayList<Item> itemList = DataLoader.loadItems(personList);
 
 	}
 }

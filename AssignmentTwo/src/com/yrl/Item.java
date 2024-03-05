@@ -6,32 +6,21 @@ package com.yrl;
  * 
  *         Date: 2024-02-22
  */
-public class Item {
-	private String code;
-	private String type;
+public abstract class Item {
+	private String itemCode;
 	private String name;
-	private Double basePrice;
 
-	public Item(String code, String type, String name, String basePrice) {
-		this.code = code;
-		this.type = type;
+	public Item(String itemCode, String name) {
+		this.itemCode = itemCode;
 		this.name = name;
-		this.basePrice = Double.parseDouble(basePrice);
 	}
 
 	public String getCode() {
-		return code;
-	}
-
-	public String getType() {
-		return type;
+		return this.itemCode;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public Double getBasePrice() {
-		return basePrice;
-	}
 }

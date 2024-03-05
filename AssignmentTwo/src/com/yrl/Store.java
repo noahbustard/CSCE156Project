@@ -8,25 +8,40 @@ package com.yrl;
  */
 
 public class Store {
-	private String code;
+	private String storeCode;
 	private Person manager;
 	private Address address;
 
-	public Store(String code, String manager, Address address) {
-		this.code = code;
-		this.manager = new Person(manager);
+	public Store(String storeCode, Person manager, Address address) {
+		this.storeCode = storeCode;
+		this.manager = manager;
+		this.address = address;
+	}
+
+	public Store(String storeCode, Address address) {
+		this.storeCode = storeCode;
 		this.address = address;
 	}
 
 	public String getCode() {
-		return code;
+		return this.storeCode;
 	}
 
 	public String getManagerUUID() {
-		return manager.toString();
+		return this.manager.toString();
 	}
 
 	public Address getAddress() {
-		return address;
+		return this.address;
+	}
+
+	@Override
+	public String toString() {
+		if (this.manager != null) {
+			return "Store storeCode=" + storeCode + ", manager=" + manager.toString() + ", address=" + address;
+		}
+		else {
+			return "Store storeCode=" + storeCode + ", manager=null, address=" + address;
+		}
 	}
 }

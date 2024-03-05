@@ -1,21 +1,34 @@
 package com.yrl;
 
-public class VoicePlan extends SaleItem {
+public class VoicePlan extends Item {
 	private String phoneNumber;
 	private Integer daysPurchased;
+	private Double basePrice;
+	private String saleCode;
 
-	public VoicePlan(String saleCode, String itemCode, String phoneNumber, String daysPurchased) {
-		super(saleCode, itemCode);
+	public VoicePlan(String itemCode, String saleCode, String name, String phoneNumber, Integer daysPurchased,
+			Double basePrice) {
+		super(itemCode, name);
 		this.phoneNumber = phoneNumber;
-		this.daysPurchased = Integer.parseInt(daysPurchased);
+		this.daysPurchased = daysPurchased;
+		this.basePrice = basePrice;
+		this.saleCode = saleCode;
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return this.phoneNumber;
 	}
 
 	public Integer getDaysPurchased() {
-		return daysPurchased;
+		return this.daysPurchased;
+	}
+
+	public Double getBasePrice() {
+		return this.basePrice;
+	}
+
+	public String getSaleCode() {
+		return saleCode;
 	}
 
 }

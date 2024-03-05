@@ -1,21 +1,33 @@
 package com.yrl;
 
-public class Service extends SaleItem {
+public class Service extends Item {
 	private Double hoursBilled;
-	private String servicemanCode;
-
-	public Service(String saleCode, String itemCode, String hoursBilled, String servicemanCode) {
-		super(saleCode, itemCode);
-		this.hoursBilled = Double.parseDouble(hoursBilled);
-		this.servicemanCode = servicemanCode;
+	private Person serviceman;
+	private Double basePrice;
+	private String saleCode;
+	
+	public Service(String itemCode, String saleCode, String name, Double hoursBilled, Person serviceman, Double basePrice) {
+		super(itemCode, name);
+		this.hoursBilled = hoursBilled;
+		this.serviceman = serviceman;
+		this.basePrice = basePrice;
+		this.saleCode = saleCode;
 	}
 
 	public Double getHoursBilled() {
-		return hoursBilled;
+		return this.hoursBilled;
 	}
 
-	public String getServicemanCode() {
-		return servicemanCode;
+	public Person getServiceman() {
+		return this.serviceman;
+	}
+
+	public Double getBasePrice() {
+		return this.basePrice;
+	}
+
+	public String getSaleCode() {
+		return saleCode;
 	}
 
 }

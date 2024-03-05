@@ -3,8 +3,11 @@ package com.yrl;
 import java.util.ArrayList;
 
 public class SalesReport {
-	public static void getTotalReport() {
-		return;
+	public static void getTotalReport(ArrayList<Sale> saleList, ArrayList<Store> storeList, ArrayList<Item> itemList,
+			ArrayList<Person> personList, ArrayList<SaleItem> saleItemList) {
+		for (Sale s : saleList) {
+
+		}
 	}
 
 	public static void getStoreReport() {
@@ -16,11 +19,10 @@ public class SalesReport {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Store> storeList = DataLoader.loadStores();
-		ArrayList<Item> itemList = DataLoader.loadItems();
 		ArrayList<Person> personList = DataLoader.loadPersons();
-		ArrayList<Sale> saleList = DataLoader.loadSales();
-		ArrayList<SaleItem> saleItemList = DataLoader.loadSaleItems();
+		ArrayList<Store> storeList = DataLoader.loadStores(personList);
+		ArrayList<Item> itemList = DataLoader.loadItems(personList);
+		ArrayList<Sale> saleList = DataLoader.loadSales(personList, storeList);
+		
 	}
 }
-
