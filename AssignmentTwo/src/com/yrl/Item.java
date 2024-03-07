@@ -1,5 +1,10 @@
 package com.yrl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Noah Bustard
  * @Author Caden France
@@ -9,13 +14,11 @@ package com.yrl;
 public abstract class Item {
 	private String itemCode;
 	private String name;
-	private Double basePrice;
 	private String saleCode;
 
-	public Item(String itemCode, String name, Double basePrice, String saleCode) {
+	public Item(String itemCode, String name, String saleCode) {
 		this.itemCode = itemCode;
 		this.name = name;
-		this.basePrice = basePrice;
 		this.saleCode = saleCode;
 	}
 
@@ -27,11 +30,23 @@ public abstract class Item {
 		return this.name;
 	}
 
-	public Double getBasePrice() {
-		return basePrice;
-	}
-
 	public String getSaleCode() {
 		return saleCode;
+	}
+	public abstract Double getCost();
+	
+	public abstract String getType();
+
+
+	public static Map<String, List<String>> createItemInfoMap(ArrayList<Item> itemList) {
+		Map<String, List<String>> itemInfoMap = new HashMap<>();
+		for (Item item : itemList) {
+			String itemCode = item.getItemCode();
+			itemInfoMap.put(itemCode, new ArrayList<>());
+			itemInfoMap.get(itemCode).add(item.getType());
+			itemInfoMap.get(itemCode).add(item.getName());
+			itemInfoMap.get(itemCode).add(item.getCost().toString());
+		}
+		return itemInfoMap;		
 	}
 }

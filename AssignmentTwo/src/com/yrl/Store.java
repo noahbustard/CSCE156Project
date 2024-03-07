@@ -1,5 +1,10 @@
 package com.yrl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Noah Bustard
  * @author Caden France
@@ -43,5 +48,17 @@ public class Store {
 		else {
 			return "Store storeCode=" + storeCode + ", manager=null, address=" + address;
 		}
+	}
+
+	public static Map<Store, List<Sale>> createStoreMap(ArrayList<Sale> saleList) {
+		Map<Store, List<Sale>> storeMap = new HashMap<>();
+		for (Sale sale : saleList) {
+			Store store = sale.getStore();
+			if (!storeMap.containsKey(store)) {
+				storeMap.put(store, new ArrayList<Sale>());
+			}
+			storeMap.get(store).add(sale);
+		}
+		return storeMap;
 	}
 }

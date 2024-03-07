@@ -2,22 +2,14 @@ package com.yrl;
 
 import java.time.LocalDate;
 
-public class Lease extends Product {
+public class Lease extends Purchase {
 	private LocalDate startDate;
 	private LocalDate endDate;
 
-	public Lease(String itemCode, String saleCode, String name, Double basePrice, LocalDate startDate,
-			LocalDate endDate) {
-		super(itemCode, name, basePrice, saleCode);
+	public Lease(String saleCode, String itemCode, String name,
+			Double cost, LocalDate startDate, LocalDate endDate) {
+		super(itemCode, saleCode, name, cost);
 		this.startDate = startDate;
-		this.endDate = endDate;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

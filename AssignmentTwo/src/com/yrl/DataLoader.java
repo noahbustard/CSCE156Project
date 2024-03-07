@@ -5,15 +5,17 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class DataLoader {
 
-	public static ArrayList<Item> loadSaleItems(ArrayList<Person> personList) {
-		String file = "data/SaleItems.csv";
+	public static ArrayList<Item> loadItems() {
 
 		ArrayList<Item> itemList = new ArrayList<Item>();
-		List<String> saleItemList = new ArrayList<>();
+
+		String file = "data/Items.csv";
+
 		Scanner s = null;
 
 		try {
@@ -25,97 +27,89 @@ public class DataLoader {
 		s.nextLine();
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
-			saleItemList.add(line);
+			String tokens[] = line.split(",");
+
+			if (tokens.length == 4) {
+				Double cost = Double.parseDouble(tokens[3]);
+				if (tokens[1] == "P") {
+					itemList.add(new Purchase(tokens[0], tokens[2], cost));
+
+				} else if (tokens[1] == "S") {
+					itemList.add(new Service(tokens[0], tokens[2], cost));
+
+				} else if (tokens[1] == "D") {
+					itemList.add(new DataPlan(tokens[0], tokens[2], cost));
+
+				} else if (tokens[1] == "V") {
+					itemList.add(new VoicePlan(tokens[0], tokens[2], cost));
+				}
+			}
 		}
 		s.close();
 
-		s = null;
-		file = "data/Items.csv";
+		return itemList;
+	}
+
+	public static ArrayList<Item> loadSaleItems(ArrayList<Person> personList,
+			Map<String, List<String>> itemInfoMap) {
+		String file = "data/SaleItems.csv";
+
+		ArrayList<Item> saleItemList = new ArrayList<>();
+		
+		Scanner s = null;
 
 		try {
 			s = new Scanner(new File(file));
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-
+		
+		
 		s.nextLine();
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
-			String itemTokens[] = line.split(",");
+			String tokens[] = line.split(",");
 
-			if (itemTokens.length == 4) {
+			List<String> itemInfo = itemInfoMap.get(tokens[1]);
+			String name = itemInfo.get(1);
+			Double cost = Double.parseDouble(itemInfo.get(2));
+			
+			if (tokens.length >= 2) {
+				if (tokens[1].charAt(0) == 'e') {
+					if (tokens.length == 2) {
+						saleItemList.add(new Purchase(tokens[0],tokens[1],name,cost));
+					} else if (tokens.length == 4) {
+						LocalDate startDate = LocalDate.parse(tokens[2]);
+						LocalDate endDate = LocalDate.parse(tokens[3]);
+						saleItemList.add(new Lease(tokens[0],tokens[1],name,cost,startDate,endDate));		
+					}
+				} else if (tokens[1].charAt(0) == 's') {
+					Double hoursBilled = Double.parseDouble(tokens[2]);
+					for (Person p : personList) {
+						if (p.getUuid().equals(tokens[3])) {
+							saleItemList.add(new Service(tokens[0],tokens[1],name,cost,hoursBilled, p));
+						}
+					}					
 
-				if (itemTokens[1].equals("P")) {
-					for (int i = 0; i < saleItemList.size(); i++) {
-						String saleItemTokens[] = saleItemList.get(i).split(",");
-						if (saleItemTokens[1].equals(itemTokens[0])) {
-							if (saleItemTokens.length == 2 && saleItemTokens[1].charAt(0) == 'e') {
-								Double basePrice = Double.parseDouble(itemTokens[3]);
-								Purchase p = new Purchase(itemTokens[0], saleItemTokens[0], itemTokens[2], basePrice);
-								itemList.add(p);
-							} else if (saleItemTokens.length == 4 && saleItemTokens[1].charAt(0) == 'e') {
-								Double basePrice = Double.parseDouble(itemTokens[3]);
-								LocalDate startDate = LocalDate.parse(saleItemTokens[2]);
-								LocalDate endDate = LocalDate.parse(saleItemTokens[3]);
-								Lease l = new Lease(itemTokens[0], saleItemTokens[0], itemTokens[2], basePrice,
-										startDate, endDate);
-								itemList.add(l);
-							}
-						}
-					}
-				} else if (itemTokens[1].equals("S")) {
-					for (int i = 0; i < saleItemList.size(); i++) {
-						String saleItemTokens[] = saleItemList.get(i).split(",");
-						if (saleItemTokens[1].equals(itemTokens[0])) {
-							if (saleItemTokens.length == 4 && saleItemTokens[1].charAt(0) == 's') {
-								Double hoursBilled = Double.parseDouble(saleItemTokens[2]);
-								Double basePrice = Double.parseDouble(itemTokens[3]);
-								Person serviceman = null;
-								for (Person p : personList) {
-									if (saleItemTokens[3].equals(p.getUuid())) {
-										serviceman = p;
-										break;
-									}
-								}
-								Service ser = new Service(itemTokens[0], saleItemTokens[0], itemTokens[2], hoursBilled,
-										serviceman, basePrice);
-								itemList.add(ser);
-							}
-						}
-					}
-				} else if (itemTokens[1].equals("D")) {
-					for (int i = 0; i < saleItemList.size(); i++) {
-						String saleItemTokens[] = saleItemList.get(i).split(",");
-						if (saleItemTokens[1].equals(itemTokens[0])) {
-							if (saleItemTokens.length == 3 && saleItemTokens[1].charAt(0) == 'p') {
-								Double basePrice = Double.parseDouble(itemTokens[3]);
-								Double gbsPurchased = Double.parseDouble(saleItemTokens[2]);
-								DataPlan dp = new DataPlan(itemTokens[0], saleItemTokens[0], itemTokens[2],
-										gbsPurchased, basePrice);
-								itemList.add(dp);
-							}
-						}
-					}
-				} else if (itemTokens[1].equals("V")) {
-					for (int i = 0; i < saleItemList.size(); i++) {
-						String saleItemTokens[] = saleItemList.get(i).split(",");
-						if (saleItemTokens[1].equals(itemTokens[0])) {
-							if (saleItemTokens.length == 4 && saleItemTokens[1].charAt(0) == 'p') {
-								int daysPurchased = Integer.parseInt(saleItemTokens[3]);
-								Double basePrice = Double.parseDouble(itemTokens[3]);
-								VoicePlan vp = new VoicePlan(itemTokens[0], saleItemTokens[0], itemTokens[2],
-										saleItemTokens[2], daysPurchased, basePrice);
-								itemList.add(vp);
-							}
-						}
+					
+				} else if (tokens[1].charAt(0) == 'p') {
+					if (tokens.length == 3) {
+						Double gbsPurcahsed = Double.parseDouble(tokens[2]);
+						saleItemList.add(new DataPlan(tokens[0],tokens[1],name,cost,gbsPurcahsed));
+					} else if (tokens.length == 4) {
+						Integer daysPurchased = Integer.parseInt(tokens[3]);
+						saleItemList.add(new VoicePlan(tokens[0],tokens[1],name,cost,tokens[2],daysPurchased));
 					}
 				}
+				
+
+				
 
 			}
 		}
 
 		s.close();
-		return itemList;
+		return saleItemList;
 	}
 
 	public static ArrayList<Store> loadStores(ArrayList<Person> personList) {
@@ -144,11 +138,9 @@ public class DataLoader {
 					}
 				}
 				if (manager != null) {
-					Store store = new Store(tokens[0], manager, a);
-					storeList.add(store);
+					storeList.add(new Store(tokens[0], manager, a));
 				} else {
-					Store store = new Store(tokens[0], a);
-					storeList.add(store);
+					storeList.add(new Store(tokens[0], a));
 				}
 
 			}
@@ -179,16 +171,14 @@ public class DataLoader {
 
 			if (tokens.length == 7) {
 				Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
-				Person person = new Person(tokens[0], tokens[1], tokens[2], a);
-				personList.add(person);
+				personList.add(new Person(tokens[0], tokens[1], tokens[2], a));
 
 			} else if (tokens.length > 7) {
 				ArrayList<String> emails = new ArrayList<String>();
 				for (int i = 7; i < tokens.length; i++)
 					emails.add(tokens[i]);
 				Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
-				Person person = new Person(tokens[0], tokens[1], tokens[2], a, emails);
-				personList.add(person);
+				personList.add(new Person(tokens[0], tokens[1], tokens[2], a, emails));
 			}
 
 		}
@@ -236,8 +226,7 @@ public class DataLoader {
 						break;
 					}
 				}
-				Sale sale = new Sale(tokens[0], store, customer, salesperson, date);
-				saleList.add(sale);
+				saleList.add(new Sale(tokens[0], store, customer, salesperson, date));
 
 			}
 		}
@@ -245,41 +234,4 @@ public class DataLoader {
 
 		return saleList;
 	}
-
-//	public static ArrayList<SaleItem> loadSaleItems() {
-//		ArrayList<SaleItem> saleItemList = new ArrayList<SaleItem>();
-//		String file = "data/SaleItems.csv";
-//		Scanner s = null;
-//
-//		try {
-//			s = new Scanner(new File(file));
-//		} catch (FileNotFoundException e) {
-//			throw new RuntimeException(e);
-//		}
-//		s.nextLine();
-//		while (s.hasNextLine()) {
-//			String line = s.nextLine();
-//			String tokens[] = line.split(",");
-//
-//			if (tokens[1].charAt(0) == 'e' && tokens.length == 2) {
-//				Product product = new Product(tokens[0], tokens[1]);
-//				saleItemList.add(product);
-//			} else if (tokens[1].charAt(0) == 'e' && tokens.length == 4) {
-//				Lease lease = new Lease(tokens[0], tokens[1], tokens[2], tokens[3]);
-//				saleItemList.add(lease);
-//			} else if (tokens[1].charAt(0) == 's') {
-//				Service service = new Service(tokens[0], tokens[1], tokens[2], tokens[3]);
-//				saleItemList.add(service);
-//			} else if (tokens[1].charAt(0) == 'p' && tokens.length == 3) {
-//				DataPlan dataPlan = new DataPlan(tokens[0], tokens[1], tokens[2]);
-//				saleItemList.add(dataPlan);
-//			} else if (tokens[1].charAt(0) == 'p' && tokens.length == 4) {
-//				VoicePlan voicePlan = new VoicePlan(tokens[0], tokens[1], tokens[2], tokens[3]);
-//				saleItemList.add(voicePlan);
-//			}
-//		}
-//		s.close();
-//		return saleItemList;
-//	}
-
 }
