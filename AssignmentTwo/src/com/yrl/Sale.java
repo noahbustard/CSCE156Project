@@ -37,4 +37,8 @@ public class Sale {
 		return this.date;
 	}
 
+	public Store getStore() {
+		return store;
+	}
+
 }

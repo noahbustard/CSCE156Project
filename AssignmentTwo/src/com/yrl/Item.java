@@ -9,13 +9,17 @@ package com.yrl;
 public abstract class Item {
 	private String itemCode;
 	private String name;
+	private Double basePrice;
+	private String saleCode;
 
-	public Item(String itemCode, String name) {
+	public Item(String itemCode, String name, Double basePrice, String saleCode) {
 		this.itemCode = itemCode;
 		this.name = name;
+		this.basePrice = basePrice;
+		this.saleCode = saleCode;
 	}
 
-	public String getCode() {
+	public String getItemCode() {
 		return this.itemCode;
 	}
 
@@ -23,4 +27,11 @@ public abstract class Item {
 		return this.name;
 	}
 
+	public Double getBasePrice() {
+		return basePrice;
+	}
+
+	public String getSaleCode() {
+		return saleCode;
+	}
 }

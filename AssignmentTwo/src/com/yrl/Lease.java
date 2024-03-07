@@ -5,20 +5,12 @@ import java.time.LocalDate;
 public class Lease extends Product {
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private String saleCode;
 
-	public Lease(String itemCode, String saleCode, String name, Double basePrice, LocalDate startDate, LocalDate endDate) {
-		super(itemCode, name, basePrice);
+	public Lease(String itemCode, String saleCode, String name, Double basePrice, LocalDate startDate,
+			LocalDate endDate) {
+		super(itemCode, name, basePrice, saleCode);
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.saleCode = saleCode;
-	}
-
-	public Lease(String itemCode, String saleCode, String name, Double basePrice, String type) {
-		super(itemCode, name, basePrice);
-		this.saleCode = saleCode;
-		this.startDate = null;
-		this.endDate = null;
 	}
 
 	public void setStartDate(LocalDate startDate) {
@@ -35,10 +27,6 @@ public class Lease extends Product {
 
 	public LocalDate getEndDate() {
 		return this.endDate;
-	}
-
-	public String getSaleCode() {
-		return saleCode;
 	}
 
 }

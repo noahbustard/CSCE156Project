@@ -9,9 +9,9 @@ import java.util.Scanner;
 
 public class DataLoader {
 
-	public static ArrayList<Item> loadItems(ArrayList<Person> personList) {
+	public static ArrayList<Item> loadSaleItems(ArrayList<Person> personList) {
 		String file = "data/SaleItems.csv";
-		
+
 		ArrayList<Item> itemList = new ArrayList<Item>();
 		List<String> saleItemList = new ArrayList<>();
 		Scanner s = null;
@@ -28,10 +28,10 @@ public class DataLoader {
 			saleItemList.add(line);
 		}
 		s.close();
-			
+
 		s = null;
 		file = "data/Items.csv";
-		
+
 		try {
 			s = new Scanner(new File(file));
 		} catch (FileNotFoundException e) {
@@ -44,20 +44,20 @@ public class DataLoader {
 			String itemTokens[] = line.split(",");
 
 			if (itemTokens.length == 4) {
-				
+
 				if (itemTokens[1].equals("P")) {
 					for (int i = 0; i < saleItemList.size(); i++) {
 						String saleItemTokens[] = saleItemList.get(i).split(",");
 						if (saleItemTokens[1].equals(itemTokens[0])) {
 							if (saleItemTokens.length == 2 && saleItemTokens[1].charAt(0) == 'e') {
 								Double basePrice = Double.parseDouble(itemTokens[3]);
-								Purchase p = new Purchase(itemTokens[0], saleItemTokens[0],itemTokens[2],basePrice);
+								Purchase p = new Purchase(itemTokens[0], saleItemTokens[0], itemTokens[2], basePrice);
 								itemList.add(p);
-							} else if  (saleItemTokens.length == 4 && saleItemTokens[1].charAt(0) == 'e') {
+							} else if (saleItemTokens.length == 4 && saleItemTokens[1].charAt(0) == 'e') {
 								Double basePrice = Double.parseDouble(itemTokens[3]);
 								LocalDate startDate = LocalDate.parse(saleItemTokens[2]);
 								LocalDate endDate = LocalDate.parse(saleItemTokens[3]);
-								Lease l = new Lease(itemTokens[0], saleItemTokens[0],itemTokens[2],basePrice,
+								Lease l = new Lease(itemTokens[0], saleItemTokens[0], itemTokens[2], basePrice,
 										startDate, endDate);
 								itemList.add(l);
 							}
@@ -77,8 +77,8 @@ public class DataLoader {
 										break;
 									}
 								}
-								Service ser = new Service(itemTokens[0], saleItemTokens[0],
-										itemTokens[2], hoursBilled, serviceman, basePrice);
+								Service ser = new Service(itemTokens[0], saleItemTokens[0], itemTokens[2], hoursBilled,
+										serviceman, basePrice);
 								itemList.add(ser);
 							}
 						}
@@ -90,8 +90,8 @@ public class DataLoader {
 							if (saleItemTokens.length == 3 && saleItemTokens[1].charAt(0) == 'p') {
 								Double basePrice = Double.parseDouble(itemTokens[3]);
 								Double gbsPurchased = Double.parseDouble(saleItemTokens[2]);
-								DataPlan dp = new DataPlan(itemTokens[0], saleItemTokens[0],
-										itemTokens[2], gbsPurchased, basePrice);
+								DataPlan dp = new DataPlan(itemTokens[0], saleItemTokens[0], itemTokens[2],
+										gbsPurchased, basePrice);
 								itemList.add(dp);
 							}
 						}
@@ -103,17 +103,17 @@ public class DataLoader {
 							if (saleItemTokens.length == 4 && saleItemTokens[1].charAt(0) == 'p') {
 								int daysPurchased = Integer.parseInt(saleItemTokens[3]);
 								Double basePrice = Double.parseDouble(itemTokens[3]);
-								VoicePlan vp = new VoicePlan(itemTokens[0], saleItemTokens[0],
-										itemTokens[2], saleItemTokens[2], daysPurchased, basePrice);
+								VoicePlan vp = new VoicePlan(itemTokens[0], saleItemTokens[0], itemTokens[2],
+										saleItemTokens[2], daysPurchased, basePrice);
 								itemList.add(vp);
 							}
 						}
 					}
 				}
-				
+
 			}
 		}
-		
+
 		s.close();
 		return itemList;
 	}
@@ -198,6 +198,7 @@ public class DataLoader {
 
 	public static ArrayList<Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList) {
 		ArrayList<Sale> saleList = new ArrayList<Sale>();
+
 		String file = "data/Sales.csv";
 		Scanner s = null;
 
@@ -237,9 +238,11 @@ public class DataLoader {
 				}
 				Sale sale = new Sale(tokens[0], store, customer, salesperson, date);
 				saleList.add(sale);
+
 			}
 		}
 		s.close();
+
 		return saleList;
 	}
 
