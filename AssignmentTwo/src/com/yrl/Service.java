@@ -14,15 +14,15 @@ public class Service extends Item {
 	private Double hoursBilled;
 	private Person serviceman;
 	private Double costPerHour;
-	private String saleCode;
+	private Sale sale;
 
-	public Service(String saleCode, String itemCode, String name, Double baseCost, Double hoursBilled,
+	public Service(Sale sale, String itemCode, String name, Double baseCost, Double hoursBilled,
 			Person serviceman) {
 		super(itemCode, name, baseCost);
 		this.hoursBilled = hoursBilled;
 		this.serviceman = serviceman;
 		this.costPerHour = baseCost;
-		this.saleCode = saleCode;
+		this.sale = sale;
 	}
 
 	public Service(String itemCode, String name, Double baseCost) {
@@ -41,8 +41,8 @@ public class Service extends Item {
 		return costPerHour;
 	}
 
-	public String getSaleCode() {
-		return saleCode;
+	public Sale getSale() {
+		return sale;
 	}
 
 	@Override

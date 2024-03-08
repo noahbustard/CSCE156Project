@@ -9,9 +9,9 @@ public class Lease extends Purchase {
 	private LocalDate startDate;
 	private LocalDate endDate;
 
-	public Lease(String saleCode, String itemCode, String name,
+	public Lease(Sale sale, String itemCode, String name,
 			Double cost, LocalDate startDate, LocalDate endDate) {
-		super(itemCode, saleCode, name, cost);
+		super(sale, itemCode, name, cost);
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}

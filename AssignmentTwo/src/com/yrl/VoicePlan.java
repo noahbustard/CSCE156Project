@@ -13,15 +13,15 @@ public class VoicePlan extends Item {
 	private String phoneNumber;
 	private Integer daysPurchased;
 	private Double cost;
-	private String saleCode;
+	private Sale sale;
 
-	public VoicePlan(String saleCode, String itemCode, String name, Double baseCost, String phoneNumber,
+	public VoicePlan(Sale sale, String itemCode, String name, Double baseCost, String phoneNumber,
 			Integer daysPurchased) {
 		super(itemCode, name, baseCost);
 		this.phoneNumber = phoneNumber;
 		this.daysPurchased = daysPurchased;
 		this.cost = baseCost;
-		this.saleCode = saleCode;
+		this.sale = sale;
 	}
 
 	public VoicePlan(String itemCode, String name, Double baseCost) {
@@ -32,8 +32,8 @@ public class VoicePlan extends Item {
 		return this.phoneNumber;
 	}
 
-	public String getSaleCode() {
-		return saleCode;
+	public Sale getSale() {
+		return this.sale;
 	}
 
 	public Integer getDaysPurchased() {

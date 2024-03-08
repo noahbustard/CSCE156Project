@@ -40,6 +40,11 @@ public class Person {
 	public String getFirstName() {
 		return this.firstName;
 	}
+	
+	public void printName() {
+		System.out.print(this.lastName+","+this.firstName);
+		return;
+	}
 
 	public String getLastName() {
 		return this.lastName;

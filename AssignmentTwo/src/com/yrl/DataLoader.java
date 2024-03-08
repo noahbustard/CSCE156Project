@@ -75,7 +75,7 @@ public class DataLoader {
 	 * @return
 	 */
 	public static ArrayList<Item> loadSaleItems(ArrayList<Person> personList,
-			Map<String, List<String>> itemInfoMap) {
+			Map<String, List<String>> itemInfoMap, ArrayList<Sale> saleList) {
 		String file = "data/SaleItems.csv";
 
 		ArrayList<Item> saleItemList = new ArrayList<>();
@@ -99,18 +99,25 @@ public class DataLoader {
 			
 			String name = itemInfo.get(1);
 			Double cost = Double.parseDouble(itemInfo.get(2));
+			Sale sale = null;
+			for (Sale temp: saleList) {
+				if (tokens[0].equals(temp.getSaleCode())) {
+					sale = new Sale(temp.getSaleCode(), temp.getStore(),
+							temp.getCustomer(), temp.getSalesperson(), temp.getDate());
+				}
+			}
 			
 			if (tokens.length >= 2) {
 				
 				if (tokens[1].charAt(0) == 'e') {
 					
 					if (tokens.length == 2) {
-						saleItemList.add(new Purchase(tokens[0],tokens[1],name,cost));
+						saleItemList.add(new Purchase(sale,tokens[1],name,cost));
 						
 					} else if (tokens.length == 4) {
 						LocalDate startDate = LocalDate.parse(tokens[2]);
 						LocalDate endDate = LocalDate.parse(tokens[3]);
-						saleItemList.add(new Lease(tokens[0],tokens[1],name,cost,startDate,endDate));		
+						saleItemList.add(new Lease(sale,tokens[1],name,cost,startDate,endDate));		
 					}
 				} else if (tokens[1].charAt(0) == 's') {
 					Double hoursBilled = Double.parseDouble(tokens[2]);
@@ -118,18 +125,18 @@ public class DataLoader {
 					for (Person p : personList) {
 						
 						if (p.getUuid().equals(tokens[3])) {
-							saleItemList.add(new Service(tokens[0],tokens[1],name,cost,hoursBilled, p));
+							saleItemList.add(new Service(sale,tokens[1],name,cost,hoursBilled, p));
 						}
 					}						
 				} else if (tokens[1].charAt(0) == 'p') {
 					
 					if (tokens.length == 3) {
 						Double gbsPurcahsed = Double.parseDouble(tokens[2]);
-						saleItemList.add(new DataPlan(tokens[0],tokens[1],name,cost,gbsPurcahsed));
+						saleItemList.add(new DataPlan(sale,tokens[1],name,cost,gbsPurcahsed));
 						
 					} else if (tokens.length == 4) {
 						Integer daysPurchased = Integer.parseInt(tokens[3]);
-						saleItemList.add(new VoicePlan(tokens[0],tokens[1],name,cost,tokens[2],daysPurchased));
+						saleItemList.add(new VoicePlan(sale,tokens[1],name,cost,tokens[2],daysPurchased));
 					}
 				}
 			}
@@ -271,7 +278,7 @@ public class DataLoader {
 				}
 				for (Store str : storeList) {
 					
-					if (tokens[1].equals(str.getCode())) {
+					if (tokens[1].equals(str.getStoreCode())) {
 						store = str;
 						break;
 					}

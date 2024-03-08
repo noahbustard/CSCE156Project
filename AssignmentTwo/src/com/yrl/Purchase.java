@@ -11,19 +11,19 @@ package com.yrl;
  */
 public class Purchase extends Item {
 
-	private String saleCode;
+	private Sale sale;
 
-	public Purchase(String saleCode, String itemCode, String name, Double baseCost) {
+	public Purchase(Sale sale, String itemCode, String name, Double baseCost) {
 		super(itemCode, name, baseCost);
-		this.saleCode = saleCode;
+		this.sale = sale;
 	}
 
 	public Purchase(String itemCode, String name, Double baseCost) {
 		super(name, itemCode, baseCost);
 	}
 
-	public String getSaleCode() {
-		return saleCode;
+	public Sale getSale() {
+		return this.sale;
 	}
 
 	@Override
