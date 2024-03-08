@@ -7,7 +7,11 @@ import java.util.ArrayList;
  * @author Noah Bustard
  * @author Caden France
  * 
- *         Date: 2024-02-22
+ * Date: 2024-03-08
+ * 
+ * Perosn class represents customers,
+ * managers, servicemen, salespersons.
+ * Included emails and address along with name.
  */
 
 public class Person {
@@ -51,8 +55,8 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person uuid=" + uuid + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
-				+ ", emails=" + emails;
+		return "Person\nuuid=" + uuid + "\nfirstName=" + firstName + "\nlastName=" + lastName + "\naddress=" + address.toString()
+				+ "\nemails=" + emails;
 	}
 
 }

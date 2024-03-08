@@ -43,10 +43,10 @@ public class Store {
 	@Override
 	public String toString() {
 		if (this.manager != null) {
-			return "Store storeCode=" + storeCode + ", manager=" + manager.toString() + ", address=" + address;
+			return "Store\nStoreCode=" + storeCode + "\nManager=" + manager.toString() + "\nAddress=" + address.toString();
 		}
 		else {
-			return "Store storeCode=" + storeCode + ", manager=null, address=" + address;
+			return "Store\nStoreCode=" + storeCode + "\nManager=null\nAddress=" + address;
 		}
 	}
 

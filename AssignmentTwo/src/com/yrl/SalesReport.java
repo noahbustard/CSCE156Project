@@ -1,21 +1,11 @@
 package com.yrl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SalesReport {
-	public static void getTotalReport() {
-	}
 
-	public static void getStoreReport() {
-
-	}
-
-	public static void getSalesReport() {
-
-	}
 
 	public static void main(String[] args) {
 		ArrayList<Person> personList = DataLoader.loadPersons();

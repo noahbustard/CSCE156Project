@@ -1,7 +1,10 @@
 package com.yrl;
 
 import java.time.LocalDate;
-
+/**
+ * Lease class is an extension of purchase. Now has start and end dates
+ * to signify the lease's duration.
+ */
 public class Lease extends Purchase {
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -19,6 +22,11 @@ public class Lease extends Purchase {
 
 	public LocalDate getEndDate() {
 		return this.endDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Lease\nItemCode= " + this.getItemCode()  + "\nstartDate=" + startDate + "\nendDate=" + endDate;
 	}
 
 }

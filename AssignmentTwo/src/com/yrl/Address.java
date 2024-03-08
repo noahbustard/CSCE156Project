@@ -4,7 +4,10 @@ package com.yrl;
  * @author Noah Bustard
  * @author Caden France
  * 
- *         Date: 2024-02-22
+ *Date: 2024-03-08
+ *
+ *Address class represents address to people's homes
+ *or stores.
  * 
  */
 
