@@ -47,7 +47,8 @@ public class Service extends Item {
 
 	@Override
 	public Double getCost() {
-		return this.costPerHour*this.hoursBilled;
+		return this.costPerHour*this.hoursBilled*1.035;
+		
 	}
 
 	@Override

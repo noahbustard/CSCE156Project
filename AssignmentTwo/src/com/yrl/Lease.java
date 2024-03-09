@@ -1,6 +1,7 @@
 package com.yrl;
 
 import java.time.LocalDate;
+import java.time.Period;
 /**
  * Lease class is an extension of purchase. Now has start and end dates
  * to signify the lease's duration.
@@ -27,6 +28,12 @@ public class Lease extends Purchase {
 	@Override
 	public String toString() {
 		return "Lease\nItemCode= " + this.getItemCode()  + "\nstartDate=" + startDate + "\nendDate=" + endDate;
+	}
+	@Override
+	public Double getCost() {
+		int months = Period.between(this.startDate, this.endDate).getMonths();
+		double monthlyCost = (this.getCost() * 1.5)/months;
+		return monthlyCost;
 	}
 
 }

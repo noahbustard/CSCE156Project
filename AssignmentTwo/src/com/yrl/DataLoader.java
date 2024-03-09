@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 /**
@@ -65,17 +65,40 @@ public class DataLoader {
 		s.close();
 		return itemList;
 	}
+	
+	
+	public static Map<String, String> loadSaleItemsMap() {
+		Map<String, String> saleItemsMap = new HashMap<String, String>();
+		
+		String file = "data/SaleItems.csv";
+		Scanner s = null;
+
+		try {
+			s = new Scanner(new File(file));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		s.nextLine();
+		while (s.hasNextLine()) {
+			String line = s.nextLine();
+			String tokens[] = line.split(",");
+			String saleCode = tokens[0];
+			String itemCode = tokens[1];
+			saleItemsMap.put(saleCode, itemCode);
+		}
+		return saleItemsMap;
+	}
 	/**
 	 * Loads saleItems from CSV file. saleItems are items that were
 	 * involved in a sale and have more specific information like
-	 * saleCode or specifics on quanitity like gbsPurchased on a Data Plan.
+	 * saleCode or specifics on quantity like gbsPurchased on a Data Plan.
 	 * 
 	 * @param personList
 	 * @param itemInfoMap
 	 * @return
 	 */
 	public static ArrayList<Item> loadSaleItems(ArrayList<Person> personList,
-			Map<String, List<String>> itemInfoMap, ArrayList<Sale> saleList) {
+			Map<String, Item> itemInfoMap, ArrayList<Sale> saleList) {
 		String file = "data/SaleItems.csv";
 
 		ArrayList<Item> saleItemList = new ArrayList<>();
@@ -95,15 +118,13 @@ public class DataLoader {
 			String tokens[] = line.split(",");
 			
 			String key = tokens[1];
-			List<String> itemInfo = itemInfoMap.get(key);
-			
-			String name = itemInfo.get(1);
-			Double cost = Double.parseDouble(itemInfo.get(2));
+			String name = itemInfoMap.get(key).getName();
+			Double cost = itemInfoMap.get(key).getCost();
 			Sale sale = null;
 			for (Sale temp: saleList) {
 				if (tokens[0].equals(temp.getSaleCode())) {
 					sale = new Sale(temp.getSaleCode(), temp.getStore(),
-							temp.getCustomer(), temp.getSalesperson(), temp.getDate());
+							temp.getCustomer(), temp.getSalesperson(), temp.getDate(), itemInfoMap.get(key));
 				}
 			}
 			
@@ -194,7 +215,7 @@ public class DataLoader {
 
 	/**
 	 * Loads in People and creates a list of people to be used to map
-	 * future objects as Customers, Salepersons, Servicemen etc.
+	 * future objects as Customers, Salespeople, Servicemen etc.
 	 */
 	public static ArrayList<Person> loadPersons() {
 		ArrayList<Person> personList = new ArrayList<Person>();
@@ -232,13 +253,13 @@ public class DataLoader {
 		return personList;
 	}
 	/**
-	 * Loads Sale data into Sale list. Has Customer and saleperson(manager)
+	 * Loads Sale data into Sale list. Has Customer and salesperson(manager)
 	 * constructed into each iteration.
 	 * @param personList
 	 * @param storeList
 	 * @return
 	 */
-	public static ArrayList<Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList) {
+	public static ArrayList<Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList, Map<String, Item> itemInfoMap, Map<String, String> saleItemMap) {
 		ArrayList<Sale> saleList = new ArrayList<Sale>();
 
 		String file = "data/Sales.csv";
@@ -261,7 +282,7 @@ public class DataLoader {
 				Person salesperson = null;
 				LocalDate date = LocalDate.parse(tokens[4]);
 				Store store = null;
-				
+				Item item = null;
 				for (Person c : personList) {
 					
 					if (tokens[2].equals(c.getUuid())) {
@@ -283,7 +304,13 @@ public class DataLoader {
 						break;
 					}
 				}
-				saleList.add(new Sale(tokens[0], store, customer, salesperson, date));
+				for (Map.Entry<String, String> entry : saleItemMap.entrySet()) {
+					if (tokens[0].equals(entry.getKey())) {
+						item = itemInfoMap.get(entry.getKey());
+					}
+				}
+				
+				saleList.add(new Sale(tokens[0], store, customer, salesperson, date, item));
 			}
 		}
 		s.close();

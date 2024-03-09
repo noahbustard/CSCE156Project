@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * 
  *         Date: 2024-03-07
  * 
- *         Sale class represents each indicidual sale that occured from the
+ *         Sale class represents each individual sale that occurred from the
  *         data. Sales include their store, customer, and salesperson all as
  *         objects to allow for easy access to any information.
  */
@@ -18,13 +18,21 @@ public class Sale {
 	private Person customer;
 	private Person salesperson;
 	private LocalDate date;
+	private Item item;
 
-	public Sale(String saleCode, Store store, Person customer, Person salesperson, LocalDate date) {
+
+	public Sale(String saleCode, Store store, Person customer, Person salesperson, LocalDate date, Item item) {
 		this.store = store;
 		this.saleCode = saleCode;
 		this.customer = customer;
 		this.salesperson = salesperson;
 		this.date = date;
+		this.item = item;
+
+	}
+
+	public Item getItem() {
+		return item;
 	}
 
 	public String getSaleCode() {
@@ -51,6 +59,7 @@ public class Sale {
 		return store;
 	}
 	
+
 	@Override
 	public String toString() {
 		return this.getSaleCode();

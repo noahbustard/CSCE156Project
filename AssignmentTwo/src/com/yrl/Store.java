@@ -48,7 +48,7 @@ public class Store {
 
 	@Override
 	public String toString() {
-		return this.getCode();
+		return this.getStoreCode();
 	}
 
 	/**
@@ -73,9 +73,12 @@ public class Store {
 		double total = 0.0;
 		for (Sale s: saleList) {
 			//TODO: create total variable
+				total += s.getItem().getCost();
 			
-		System.out.printf(System.out.printf("%-10s %-30s %-10s %-15f\n",
-				this.getStoreCode(), this.getManager().printName(), saleList.size(), //total );
+				
+			
+		System.out.printf("%-10s %-30s %-10d %-15f\n",
+				this.getStoreCode(), this.getManager(), saleList.size(), total);
 		}
 	}
 

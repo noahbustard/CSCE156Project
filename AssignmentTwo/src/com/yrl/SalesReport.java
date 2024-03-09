@@ -10,12 +10,13 @@ public class SalesReport {
 	public static void main(String[] args) {
 		ArrayList<Person> personList = DataLoader.loadPersons();
 		ArrayList<Store> storeList = DataLoader.loadStores(personList);
-		ArrayList<Sale> saleList = DataLoader.loadSales(personList, storeList);
 		ArrayList<Item> itemList = DataLoader.loadItems();
-		Map<String, List<String>> itemInfoMap = Item.createItemInfoMap(itemList);
+		Map<String, Item> itemInfoMap = Item.createItemInfoMap(itemList);
+		Map<String, String> saleItemMap = DataLoader.loadSaleItemsMap();
+		ArrayList<Sale> saleList = DataLoader.loadSales(personList, storeList, itemInfoMap, saleItemMap);
 		ArrayList<Item> saleItemList = DataLoader.loadSaleItems(personList, itemInfoMap, saleList);
+		System.out.println(saleItemList);
 		Map<Store, List<Sale>> storeMap = Store.createStoreMap(saleList, storeList);
-		System.out.println(storeMap);
 		
 		
 		System.out.println("+----------------------------------------------------------------+\n"

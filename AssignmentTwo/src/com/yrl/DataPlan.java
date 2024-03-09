@@ -39,7 +39,7 @@ public class DataPlan extends Item {
 
 	@Override
 	public Double getCost() {
-		return this.costPerGb * this.gbsPurchased;
+		return this.costPerGb * this.gbsPurchased*1.055;
 	}
 
 	@Override

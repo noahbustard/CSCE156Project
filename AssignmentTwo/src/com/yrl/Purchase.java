@@ -38,7 +38,7 @@ public class Purchase extends Item {
 
 	@Override
 	public Double getCost() {
-		return this.getBaseCost();
+		return this.getBaseCost() * 1.065;
 	}
 
 }
