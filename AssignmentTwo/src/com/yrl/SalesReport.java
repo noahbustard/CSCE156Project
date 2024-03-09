@@ -15,16 +15,37 @@ public class SalesReport {
 		Map<String, String> saleItemMap = DataLoader.loadSaleItemsMap();
 		ArrayList<Sale> saleList = DataLoader.loadSales(personList, storeList, itemInfoMap, saleItemMap);
 		ArrayList<Item> saleItemList = DataLoader.loadSaleItems(personList, itemInfoMap, saleList);
-		System.out.println(saleItemList);
+		//System.out.println(saleItemList);
 		Map<Store, List<Sale>> storeMap = Store.createStoreMap(saleList, storeList);
 		
 		
+
+		System.out.println("+----------------------------------------------------------------------------------------+\n"
+				+ "| Summary Report - By Total                                                              |\n"
+				+ "+----------------------------------------------------------------------------------------+\n"
+				+ "");
+		System.out.println("Invoice #  Store      Customer                       Num Items          Tax       Total\n"
+				+ "");
+		for (Sale s: saleList) {
+			System.out.printf("%-10s %-10s %-10s\n",s.toString(),
+					s.getStore().getStoreCode(), s.getCustomer().printName());
+		}
+		System.out.println("+----------------------------------------------------------------------------------------+");
+			
+		
 		System.out.println("+----------------------------------------------------------------+\n"
-				+ "| Store Sales Summary Report                                     |\n"
-				+ "+----------------------------------------------------------------+");
+		+ "| Store Sales Summary Report                                     |\n"
+		+ "+----------------------------------------------------------------+");
 		System.out.println("Store      Manager                        # Sales    Grand Total  ");
 		for (Store store : storeMap.keySet()) {
-            store.generateStoreReport(storeMap.get(store));
+			System.out.printf("%-10s %-10s\n", store.getStoreCode(), store.getManager().printName());
 		}
-	}
+		System.out.println("+----------------------------------------------------------------+");
+					
+
+		for (Sale s: saleList) {
+			s.printReport();
+		}
+		
+	}		
 }

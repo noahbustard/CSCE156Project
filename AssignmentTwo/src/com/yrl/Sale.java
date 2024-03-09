@@ -65,4 +65,15 @@ public class Sale {
 		return this.getSaleCode();
 	}
 
+	public void printReport() {
+		System.out.println("Sale      " + this.getSaleCode());
+		System.out.println("Store     " + this.getStore().getStoreCode());
+		System.out.println("Date      " + this.getDate());
+		System.out.println("Customer");
+		System.out.println(this.getCustomer().toString());
+		System.out.println(this.getSalesperson().toString());
+		System.out.println("\n\n");
+		
+	}
+
 }

@@ -52,7 +52,9 @@ public class DataLoader {
 					itemList.add(new Purchase(name, itemCode, cost));
 
 				} else if (tokens[1].charAt(0) == 'S') {
+					Service S = new Service(name, itemCode, cost);
 					itemList.add(new Service(name, itemCode, cost));
+					
 
 				} else if (tokens[1].charAt(0) == 'D') {
 					itemList.add(new DataPlan(name, itemCode, cost));
@@ -192,6 +194,7 @@ public class DataLoader {
 
 			if (tokens.length == 6) {
 				Person manager = null;
+				
 				Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
 				
 				for (Person p : personList) {

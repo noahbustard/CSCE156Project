@@ -41,9 +41,9 @@ public class Person {
 		return this.firstName;
 	}
 	
-	public void printName() {
-		System.out.print(this.lastName+","+this.firstName);
-		return;
+	public String printName() {
+		String name = this.lastName+","+this.firstName;
+		return name;
 	}
 
 	public String getLastName() {
@@ -60,8 +60,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person\nuuid=" + uuid + "\nfirstName=" + firstName + "\nlastName=" + lastName + "\naddress=" + address.toString()
-				+ "\nemails=" + emails;
+		return this.printName() + " (" + this.uuid + ")\n	[" + this.getEmails()+"]\n	" + this.getAddress().toString();
 	}
 
 }

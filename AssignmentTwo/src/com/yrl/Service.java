@@ -27,6 +27,7 @@ public class Service extends Item {
 
 	public Service(String itemCode, String name, Double baseCost) {
 		super(name, itemCode, baseCost);
+		this.costPerHour = baseCost;
 	}
 
 	public Double getHoursBilled() {
@@ -47,8 +48,11 @@ public class Service extends Item {
 
 	@Override
 	public Double getCost() {
-		return this.costPerHour*this.hoursBilled*1.035;
+		return this.costPerHour;
 		
+	}
+	public Double getTotalCost() {
+		return this.costPerHour*this.hoursBilled*1.035;
 	}
 
 	@Override

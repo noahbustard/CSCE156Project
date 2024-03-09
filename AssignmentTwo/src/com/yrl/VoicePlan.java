@@ -42,11 +42,15 @@ public class VoicePlan extends Item {
 
 	@Override
 	public Double getCost() {
-			double totalCost = (double) (daysPurchased/30) * cost;
-			return totalCost;
+			return cost;
 		
 	}
 
+	public Double getTotalCost() {
+		double totalCost = (double) (daysPurchased/30) * cost;
+		return totalCost;
+	
+	}
 	@Override
 	public String getType() {
 		return "VoicePlan";

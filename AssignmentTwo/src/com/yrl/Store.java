@@ -35,7 +35,7 @@ public class Store {
 	}
 
 	public Person getManager() {
-		return manager;
+		return this.manager;
 	}
 
 	public String getManagerUUID() {

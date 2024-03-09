@@ -39,9 +39,12 @@ public class DataPlan extends Item {
 
 	@Override
 	public Double getCost() {
+		return this.costPerGb;
+	}
+	
+	public Double getTotalCost() {
 		return this.costPerGb * this.gbsPurchased*1.055;
 	}
-
 	@Override
 	public String getType() {
 		return "Data Plan";
