@@ -11,49 +11,37 @@ package com.yrl;
  */
 public class DataPlan extends Item {
 	private Double gbsPurchased;
-	private Double costPerGb;
-	private Sale sale;
 
-	public DataPlan(Sale sale, String itemCode, String name, Double baseCost, Double gbsPurchased) {
+	public DataPlan(String itemCode, String name, Double baseCost, Double gbsPurchased) {
 		super(itemCode, name, baseCost);
 		this.gbsPurchased = gbsPurchased;
-		this.costPerGb = baseCost;
-		this.sale = sale;
 	}
 
 	public DataPlan(String itemCode, String name, Double baseCost) {
-		super(name, itemCode, baseCost);
+		super(itemCode, name, baseCost);
 	}
 
 	public Double getGbsPurchased() {
 		return this.gbsPurchased;
 	}
 
-	public Double getCostPerGb() {
-		return this.costPerGb;
-	}
-
-	public Sale getSale() {
-		return sale;
-	}
-
 	@Override
 	public Double getCost() {
-		return this.costPerGb;
-	}
+		return this.getBaseCost() * this.gbsPurchased;	}
 	
-	public Double getTotalCost() {
-		return this.costPerGb * this.gbsPurchased*1.055;
-	}
 	@Override
 	public String getType() {
 		return "Data Plan";
+	}
+	@Override
+	public Double getTax() {
+		return this.getCost() * 0.055;
 	}
 
 	@Override
 	public String toString() {
 		return "DataPlan\nItemCode= " + this.getItemCode() + "\ngbsPurchased=" + gbsPurchased + "\ncostPerGb="
-				+ costPerGb;
+				+ this.getBaseCost();
 	}
 
 }

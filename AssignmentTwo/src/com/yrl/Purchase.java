@@ -10,35 +10,27 @@ package com.yrl;
  * Is an extension of the item class.
  */
 public class Purchase extends Item {
-
-	private Sale sale;
-
-	public Purchase(Sale sale, String itemCode, String name, Double baseCost) {
-		super(itemCode, name, baseCost);
-		this.sale = sale;
-	}
-
+	
 	public Purchase(String itemCode, String name, Double baseCost) {
-		super(name, itemCode, baseCost);
-	}
-
-	public Sale getSale() {
-		return this.sale;
+		super(itemCode, name, baseCost);
 	}
 
 	@Override
 	public String getType() {
-		return "Purchase/Lease";
+		return "Purchase";
 	}
 
 	@Override
 	public String toString() {
-		return "Purchase Item Code: " + this.getItemCode();
+		return "\nPurchase\nItemCode=" + this.getItemCode() + "\nName=" + this.getName() + "\nbaseCost=" + this.getBaseCost();
 	}
-
 	@Override
 	public Double getCost() {
-		return this.getBaseCost() * 1.065;
+		return super.getBaseCost();
+	}
+	@Override
+	public Double getTax() {
+		return super.getBaseCost() * 0.065;
 	}
 
 }

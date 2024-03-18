@@ -9,10 +9,10 @@ import java.time.Period;
 public class Lease extends Purchase {
 	private LocalDate startDate;
 	private LocalDate endDate;
-
-	public Lease(Sale sale, String itemCode, String name,
-			Double cost, LocalDate startDate, LocalDate endDate) {
-		super(sale, itemCode, name, cost);
+	
+	public Lease(String itemCode, String name,
+			Double baseCost, LocalDate startDate, LocalDate endDate) {
+		super(itemCode, name, baseCost);
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
@@ -24,6 +24,10 @@ public class Lease extends Purchase {
 	public LocalDate getEndDate() {
 		return this.endDate;
 	}
+	
+	public String getType() {
+		return "Lease";
+	}
 
 	@Override
 	public String toString() {
@@ -32,8 +36,14 @@ public class Lease extends Purchase {
 	@Override
 	public Double getCost() {
 		int months = Period.between(this.startDate, this.endDate).getMonths();
-		double monthlyCost = (this.getCost() * 1.5)/months;
+		months += Period.between(this.startDate, this.endDate).getYears() * 12;
+		double monthlyCost = (this.getBaseCost() * 1.5)/months;
 		return monthlyCost;
+	}
+	
+	@Override
+	public Double getTax() {
+		return 0.0;
 	}
 
 }
