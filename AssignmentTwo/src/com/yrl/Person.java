@@ -41,7 +41,7 @@ public class Person {
 		return this.firstName;
 	}
 	
-	public String printName() {
+	public String getFullName() {
 		String name = this.lastName+","+this.firstName;
 		return name;
 	}
@@ -60,7 +60,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return this.printName() + " (" + this.uuid + ")\n	[" + this.getEmails()+"]\n	" + this.getAddress().toString();
+		return this.getFullName() + " (" + this.uuid + ")\n	[" + this.getEmails()+"]\n	" + this.getAddress().toString();
 	}
 
 }

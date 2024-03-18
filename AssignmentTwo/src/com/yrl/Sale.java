@@ -18,21 +18,13 @@ public class Sale {
 	private Person customer;
 	private Person salesperson;
 	private LocalDate date;
-	private Item item;
 
-
-	public Sale(String saleCode, Store store, Person customer, Person salesperson, LocalDate date, Item item) {
+	public Sale (String saleCode, Store store, Person customer, Person salesperson, LocalDate date) {
 		this.store = store;
 		this.saleCode = saleCode;
 		this.customer = customer;
 		this.salesperson = salesperson;
 		this.date = date;
-		this.item = item;
-
-	}
-
-	public Item getItem() {
-		return item;
 	}
 
 	public String getSaleCode() {
@@ -41,10 +33,6 @@ public class Sale {
 
 	public Person getCustomer() {
 		return this.customer;
-	}
-
-	public String getCustomerCode() {
-		return this.customer.getUuid();
 	}
 
 	public Person getSalesperson() {
@@ -62,7 +50,8 @@ public class Sale {
 
 	@Override
 	public String toString() {
-		return this.getSaleCode();
+		return "\nSale\n" + "Sale Code: " + this.saleCode + "\nCustomer UUID: " + this.getCustomer().getUuid() + 
+				"\nSalesperson UUID: " + this.getSalesperson().getUuid();
 	}
 
 	public void printReport() {

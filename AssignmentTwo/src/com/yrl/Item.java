@@ -18,7 +18,7 @@ public abstract class Item {
 	private String itemCode;
 	private String name;
 	private Double baseCost;
-
+	
 	public Item( String itemCode, String name, Double baseCost) {
 		this.itemCode = itemCode;
 		this.name = name;
@@ -37,9 +37,13 @@ public abstract class Item {
 
 	public abstract String getType();
 
-	public Double getBaseCost() {
-		return baseCost;
-	}
+	public  Double getBaseCost() {
+		return this.baseCost;
+	};
+	
+	public abstract Double getTax();
+		
+	
 	/**
 	 * createItemInfoMap is a method that returns a map
 	 * that has every loaded item's code as the key
@@ -57,12 +61,12 @@ public abstract class Item {
 			itemInfoMap.put(itemCode, item);
 			
 		}
+		//System.out.println("ran");
+		//System.out.println(itemInfoMap);
 		return itemInfoMap;
 	}
 
-	@Override
-	public String toString() {
-		return "Item\nitemCode=" + itemCode + "\nname=" + name;
-	}
+
+	public  abstract String toString();
 
 }

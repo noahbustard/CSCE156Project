@@ -7,21 +7,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
 /**
  * Authors
+ * 
  * @noahbustard
  * @cadenfrance
  * 
- * 2024-03-08
+ *              2024-03-08
  * 
  * 
- * Class loads data from CSV files into usable lists
+ *              Class loads data from CSV files into usable lists
  */
 public class DataLoader {
 	/**
-	 * Loads items into itemList. Doesn't include specifics
-	 * like saleCode and is more of an inventory list. Can
-	 * load Purchases, Services, Data Plans, and Voice Plans.
+	 * Loads items into itemList. Doesn't include specifics like saleCode and is
+	 * more of an inventory list. Can load Purchases, Services, Data Plans, and
+	 * Voice Plans.
+	 * 
 	 * @return
 	 */
 	public static ArrayList<Item> loadItems() {
@@ -43,35 +46,31 @@ public class DataLoader {
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
 
-
 			if (tokens.length == 4) {
 				String itemCode = tokens[0];
 				String name = tokens[2];
 				Double cost = Double.parseDouble(tokens[3]);
 				if (tokens[1].charAt(0) == 'P') {
-					itemList.add(new Purchase(name, itemCode, cost));
+					itemList.add(new Purchase(itemCode, name, cost));
 
 				} else if (tokens[1].charAt(0) == 'S') {
-					Service S = new Service(name, itemCode, cost);
-					itemList.add(new Service(name, itemCode, cost));
-					
+					itemList.add(new Service(itemCode, name, cost));
 
 				} else if (tokens[1].charAt(0) == 'D') {
-					itemList.add(new DataPlan(name, itemCode, cost));
+					itemList.add(new DataPlan(itemCode, name, cost));
 
 				} else if (tokens[1].charAt(0) == 'V') {
-					itemList.add(new VoicePlan(name, itemCode, cost));
+					itemList.add(new VoicePlan(itemCode, name, cost));
 				}
 			}
 		}
 		s.close();
 		return itemList;
 	}
-	
-	
-	public static Map<String, String> loadSaleItemsMap() {
-		Map<String, String> saleItemsMap = new HashMap<String, String>();
-		
+
+	public static Map<String, ArrayList<String>> loadSaleItemsMap() {
+		Map<String, ArrayList<String>> saleItemsMap = new HashMap<String, ArrayList<String>>();
+
 		String file = "data/SaleItems.csv";
 		Scanner s = null;
 
@@ -86,25 +85,31 @@ public class DataLoader {
 			String tokens[] = line.split(",");
 			String saleCode = tokens[0];
 			String itemCode = tokens[1];
-			saleItemsMap.put(saleCode, itemCode);
+			if (!saleItemsMap.containsKey(tokens[0])) {
+				saleItemsMap.put(saleCode, new ArrayList<String>());
+			}
+			saleItemsMap.get(saleCode).add(itemCode);
 		}
 		return saleItemsMap;
 	}
+
 	/**
-	 * Loads saleItems from CSV file. saleItems are items that were
-	 * involved in a sale and have more specific information like
-	 * saleCode or specifics on quantity like gbsPurchased on a Data Plan.
+	 * Loads saleItems from CSV file. saleItems are items that were involved in a
+	 * sale and have more specific information like saleCode or specifics on
+	 * quantity like gbsPurchased on a Data Plan.
 	 * 
 	 * @param personList
 	 * @param itemInfoMap
 	 * @return
 	 */
-	public static ArrayList<Item> loadSaleItems(ArrayList<Person> personList,
-			Map<String, Item> itemInfoMap, ArrayList<Sale> saleList) {
+	public static Map<Sale, ArrayList<Item>> loadSaleItems(ArrayList<Person> personList, Map<String, Item> itemInfoMap,
+			Map<String, Sale> saleMap, Map<String, ArrayList<String>> saleCodeItemCodeMap) {
 		String file = "data/SaleItems.csv";
 
-		ArrayList<Item> saleItemList = new ArrayList<>();
-		
+		Map<Sale, ArrayList<Item>> saleItemsMap = new HashMap<>();
+		for (Map.Entry<String, Sale> entry: saleMap.entrySet()) {
+			saleItemsMap.put(entry.getValue(), new ArrayList<Item>());
+		}
 		Scanner s = null;
 
 		try {
@@ -112,66 +117,52 @@ public class DataLoader {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-		
-		
+
 		s.nextLine();
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
 			
-			String key = tokens[1];
-			String name = itemInfoMap.get(key).getName();
-			Double cost = itemInfoMap.get(key).getCost();
-			Sale sale = null;
-			for (Sale temp: saleList) {
-				if (tokens[0].equals(temp.getSaleCode())) {
-					sale = new Sale(temp.getSaleCode(), temp.getStore(),
-							temp.getCustomer(), temp.getSalesperson(), temp.getDate(), itemInfoMap.get(key));
-				}
-			}
-			
-			if (tokens.length >= 2) {
-				
-				if (tokens[1].charAt(0) == 'e') {
-					
-					if (tokens.length == 2) {
-						saleItemList.add(new Purchase(sale,tokens[1],name,cost));
-						
-					} else if (tokens.length == 4) {
-						LocalDate startDate = LocalDate.parse(tokens[2]);
-						LocalDate endDate = LocalDate.parse(tokens[3]);
-						saleItemList.add(new Lease(sale,tokens[1],name,cost,startDate,endDate));		
-					}
-				} else if (tokens[1].charAt(0) == 's') {
-					Double hoursBilled = Double.parseDouble(tokens[2]);
-					
-					for (Person p : personList) {
-						
-						if (p.getUuid().equals(tokens[3])) {
-							saleItemList.add(new Service(sale,tokens[1],name,cost,hoursBilled, p));
-						}
-					}						
-				} else if (tokens[1].charAt(0) == 'p') {
-					
-					if (tokens.length == 3) {
-						Double gbsPurcahsed = Double.parseDouble(tokens[2]);
-						saleItemList.add(new DataPlan(sale,tokens[1],name,cost,gbsPurcahsed));
-						
-					} else if (tokens.length == 4) {
-						Integer daysPurchased = Integer.parseInt(tokens[3]);
-						saleItemList.add(new VoicePlan(sale,tokens[1],name,cost,tokens[2],daysPurchased));
+			String saleCode = tokens[0];
+			String itemCode = tokens[1];
+			Sale sale = saleMap.get(saleCode);
+			Item item = itemInfoMap.get(itemCode);
+			String name = itemInfoMap.get(itemCode).getName();
+			Double baseCost = itemInfoMap.get(itemCode).getBaseCost();
+		
+			if (item.getType().equals("Purchase") && tokens.length == 2) {
+				saleItemsMap.get(sale).add(new Purchase(itemCode, name, baseCost));
+			} else if (item.getType().equals("Purchase") && tokens.length == 4) {
+				LocalDate startDate = LocalDate.parse(tokens[2]);
+				LocalDate endDate = LocalDate.parse(tokens[3]);
+				saleItemsMap.get(sale).add(new Lease(itemCode, name, baseCost, startDate, endDate));
+			} else if (item.getType().equals("Data Plan")) {
+				Double gbPurchased = Double.parseDouble(tokens[2]);
+				saleItemsMap.get(sale).add(new DataPlan(itemCode, name, baseCost, gbPurchased));
+			} else if (item.getType().equals("Voice Plan")) {
+				String phoneNumber = tokens[2];
+				int daysPurchased = Integer.parseInt(tokens[3]);
+				saleItemsMap.get(sale).add(new VoicePlan(itemCode, name, baseCost, phoneNumber, daysPurchased));
+			} else if (item.getType().equals("Service")) {
+				Double hoursBilled = Double.parseDouble(tokens[2]);
+				Person servicePerson = null;
+				for (Person person : personList) {
+					if (tokens[3].equals(person.getUuid())) {
+						servicePerson = person;
 					}
 				}
+				saleItemsMap.get(sale).add(new Service(itemCode, name, baseCost, hoursBilled, servicePerson));
 			}
-		}
 
+		}
 		s.close();
-		return saleItemList;
+		return saleItemsMap;
 	}
+
 	/**
-	 *  Loads store data into storeList. Has a manager person
-	 *  constructed into store but can function if no manager UUID
-	 *  matches any person's UUID.
+	 * Loads store data into storeList. Has a manager person constructed into store
+	 * but can function if no manager UUID matches any person's UUID.
+	 * 
 	 * @param personList
 	 * @return
 	 */
@@ -188,17 +179,17 @@ public class DataLoader {
 
 		s.nextLine();
 		while (s.hasNextLine()) {
-			
+
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
 
 			if (tokens.length == 6) {
 				Person manager = null;
-				
+
 				Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
-				
+
 				for (Person p : personList) {
-					
+
 					if (tokens[1].equals(p.getUuid())) {
 						manager = p;
 						break;
@@ -206,7 +197,7 @@ public class DataLoader {
 				}
 				if (manager != null) {
 					storeList.add(new Store(tokens[0], manager, a));
-					
+
 				} else {
 					storeList.add(new Store(tokens[0], a));
 				}
@@ -217,8 +208,8 @@ public class DataLoader {
 	}
 
 	/**
-	 * Loads in People and creates a list of people to be used to map
-	 * future objects as Customers, Salespeople, Servicemen etc.
+	 * Loads in People and creates a list of people to be used to map future objects
+	 * as Customers, Salespeople, Servicemen etc.
 	 */
 	public static ArrayList<Person> loadPersons() {
 		ArrayList<Person> personList = new ArrayList<Person>();
@@ -233,7 +224,7 @@ public class DataLoader {
 
 		s.nextLine();
 		while (s.hasNextLine()) {
-			
+
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
 
@@ -243,7 +234,7 @@ public class DataLoader {
 
 			} else if (tokens.length > 7) {
 				ArrayList<String> emails = new ArrayList<String>();
-				
+
 				for (int i = 7; i < tokens.length; i++) {
 					emails.add(tokens[i]);
 				}
@@ -255,15 +246,18 @@ public class DataLoader {
 		s.close();
 		return personList;
 	}
+
 	/**
 	 * Loads Sale data into Sale list. Has Customer and salesperson(manager)
 	 * constructed into each iteration.
+	 * 
 	 * @param personList
 	 * @param storeList
 	 * @return
 	 */
-	public static ArrayList<Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList, Map<String, Item> itemInfoMap, Map<String, String> saleItemMap) {
-		ArrayList<Sale> saleList = new ArrayList<Sale>();
+	public static Map<String, Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList,
+			Map<String, Item> itemInfoMap) {
+		Map<String, Sale> saleMap = new HashMap<String, Sale>();
 
 		String file = "data/Sales.csv";
 		Scanner s = null;
@@ -276,7 +270,7 @@ public class DataLoader {
 
 		s.nextLine();
 		while (s.hasNextLine()) {
-			
+
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
 
@@ -285,39 +279,33 @@ public class DataLoader {
 				Person salesperson = null;
 				LocalDate date = LocalDate.parse(tokens[4]);
 				Store store = null;
-				Item item = null;
 				for (Person c : personList) {
-					
+
 					if (tokens[2].equals(c.getUuid())) {
 						customer = c;
 						break;
 					}
 				}
 				for (Person sal : personList) {
-					
+
 					if (tokens[3].equals(sal.getUuid())) {
 						salesperson = sal;
 						break;
 					}
 				}
 				for (Store str : storeList) {
-					
+
 					if (tokens[1].equals(str.getStoreCode())) {
 						store = str;
 						break;
 					}
 				}
-				for (Map.Entry<String, String> entry : saleItemMap.entrySet()) {
-					if (tokens[0].equals(entry.getKey())) {
-						item = itemInfoMap.get(entry.getKey());
-					}
-				}
-				
-				saleList.add(new Sale(tokens[0], store, customer, salesperson, date, item));
+				saleMap.put(tokens[0], new Sale(tokens[0], store, customer, salesperson, date));
+
 			}
 		}
 		s.close();
 
-		return saleList;
+		return saleMap;
 	}
 }

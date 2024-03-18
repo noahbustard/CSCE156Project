@@ -57,23 +57,21 @@ public class Store {
 	 * @param saleList
 	 * @return
 	 */
-	public static Map<Store, List<Sale>> createStoreMap(ArrayList<Sale> saleList, ArrayList<Store> storeList) {
+	public static Map<Store, List<Sale>> createStoreMap(Map<String, Sale> saleMap, ArrayList<Store> storeList) {
 		Map<Store, List<Sale>> storeMap = new HashMap<>();
 		for (Store key : storeList) {
 			storeMap.put(key, new ArrayList<Sale>());
 		}
-		for (Sale sale : saleList) {
-			Store store = sale.getStore();
-			storeMap.get(store).add(sale);
+		for (Map.Entry<String, Sale> entry : saleMap.entrySet()) {
+			Store store = entry.getValue().getStore();
+			storeMap.get(store).add(entry.getValue());
 		}
 		return storeMap;
 	}
 
 	public void generateStoreReport(List<Sale> saleList) {
 		double total = 0.0;
-		for (Sale s: saleList) {
-			//TODO: create total variable
-				total += s.getItem().getCost();
+		//TODO: create total variable
 			
 				
 			
@@ -82,4 +80,3 @@ public class Store {
 		}
 	}
 
-}
