@@ -17,7 +17,7 @@ import java.util.Map;
 public abstract class Item {
 	private String itemCode;
 	private String name;
-	private Double baseCost;
+	private double baseCost;
 	
 	public Item( String itemCode, String name, Double baseCost) {
 		this.itemCode = itemCode;
