@@ -1,6 +1,6 @@
 use nbustard2;
 
-
+drop table if exists email;
 drop table if exists SaleItem;
 drop table if exists Item;
 drop table if exists Sale;
@@ -65,6 +65,13 @@ foreign key (itemId) references Item(itemId),
 foreign key (saleId) references Sale(saleId)
 );
 
+create table Email (
+emailId int not null primary key auto_increment,
+address varchar(256),
+personId int not null,
+foreign key (personId) references Person(personId)
+);
+
 insert into Item (itemId,type,name,baseCost) values (1,"P","BlackBerry 4", 0.01);
 insert into Item (itemId,type,name,baseCost) values (2,"P","iPhone X", 999.00);
 insert into Item (itemId,type,name,baseCost) values (3,"S","Water Damage", 100.00);
@@ -112,6 +119,18 @@ insert into SaleItem (saleItemId,startDate,endDate,itemId,saleId) values (2,"202
 insert into SaleItem (saleItemId,hoursBilled,servicemanId,itemId,saleId) values (3,2.0,6,3,3);
 insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (4,150.0,6,1);
 insert into SaleItem (saleItemId,phoneNumber,daysPurchased,itemId,saleId) values (5,"402-472-2401",95,7,2);
+
+insert into Email (emailId, address, personId) values (1,"edriffill0@timesonline.co.uk",1);
+insert into Email (emailId, address, personId) values (2,"sbowerman1@reuters.com",2);
+insert into Email (emailId, address, personId) values (3,"rbarrick2@dot.gov",3);
+insert into Email (emailId, address, personId) values (4,"kshier3@aol.com",4);
+insert into Email (emailId, address, personId) values (5,"slammerts4@yellowbook.com",5);
+insert into Email (emailId, address, personId) values (6,"cmartino5@reference.com",6);
+insert into Email (emailId, address, personId) values (7,"vlynes6@thetimes.co.uk",7);
+insert into Email (emailId, address, personId) values (8,"omitrovic7@freewebs.com",8);
+insert into Email (emailId, address, personId) values (9,"tmcconville8@ifeng.com",9);
+insert into Email (emailId, address, personId) values (10,"pparmby9@drupal.org",10);
+
 
 update Sale set storeId = 2,customerId = 1,salespersonId = 4 where saleId = 1;
 update Sale set storeId = 2,customerId = 2,salespersonId = 4 where saleId = 2;
