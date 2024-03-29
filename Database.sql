@@ -1,4 +1,7 @@
-use nbustard2;
+/*
+Drops any existing tables to ensure only data listed
+below has been inserted into the tables
+*/
 
 drop table if exists Email;
 drop table if exists SaleItem;
@@ -10,6 +13,7 @@ drop table if exists Address;
 drop table if exists Zip;
 drop table if exists City;
 drop table if exists State;
+
 
 create table State (
 stateId int not null primary key auto_increment,
@@ -43,6 +47,7 @@ foreign key (zipId) references Zip(zipId)
 
 create table Store (
 storeId int not null primary key auto_increment,
+storeCode varchar(6) not null,
 addressId int not null,
 foreign key (addressId) references Address(addressId)
 );
@@ -59,6 +64,7 @@ foreign key (addressId) references Address(addressId)
 
 create table Sale (
 saleId int not null primary key auto_increment,
+saleCode varchar(4) not null,
 date varchar(10) not null,
 storeId int not null,
 customerId int not null,
@@ -70,6 +76,7 @@ foreign key (salespersonId) references Person(personId)
 
 create table Item(
 itemId int not null primary key auto_increment,
+itemCode varchar(4) not null,
 baseCost double not null,
 type varchar(1) not null,
 name varchar(256) not null
@@ -134,16 +141,16 @@ insert into Zip (zipId,zipcode,cityId) values (10,73157,10);
 insert into Zip (zipId,zipcode,cityId) values (11,18018,11);
 insert into Zip (zipId,zipcode,cityId) values (12,24029,1);
 
-insert into Item (itemId,type,name,baseCost) values (1,"P","BlackBerry 4", 0.01);
-insert into Item (itemId,type,name,baseCost) values (2,"P","iPhone X", 999.00);
-insert into Item (itemId,type,name,baseCost) values (3,"S","Water Damage", 100.00);
-insert into Item (itemId,type,name,baseCost) values (4,"S","Screen Repair", 76.00);
-insert into Item (itemId,type,name,baseCost) values (5,"S","Camera Repair", 200.00);
-insert into Item (itemId,type,name,baseCost) values (6,"D","LTE Deluxe", 30.00);
-insert into Item (itemId,type,name,baseCost) values (7,"V","Unlimited Daily", 50.00);
-insert into Item (itemId,type,name,baseCost) values (8,"P","iPhone 11", 1100.00);
-insert into Item (itemId,type,name,baseCost) values (9,"P","iPhone 14", 1600.00);
-insert into Item (itemId,type,name,baseCost) values (10,"P","iPhone 15", 1700.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (1,"e001","P","BlackBerry 4", 0.01);
+insert into Item (itemId,itemCode,type,name,baseCost) values (2,"e002","P","iPhone X", 999.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (3,"s001","S","Water Damage", 100.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (4,"s002","S","Screen Repair", 76.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (5,"s003","S","Camera Repair", 200.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (6,"p001","D","LTE Deluxe", 30.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (7,"p002","V","Unlimited Daily", 50.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (8,"e004","P","iPhone 11", 1100.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (9,"e005","P","iPhone 14", 1600.00);
+insert into Item (itemId,itemCode,type,name,baseCost) values (10,"e006","P","iPhone 15", 1700.00);
 
 insert into Address (addressId,street,cityId,stateId,zipId) values (1,"250 Tomscot",1,1,1);
 insert into Address (addressId,street,cityId,stateId,zipId) values (2,"1946 Farwell",2,2,2);
@@ -158,8 +165,8 @@ insert into Address (addressId,street,cityId,stateId,zipId) values (10,"999 Good
 insert into Address (addressId,street,cityId,stateId,zipId) values (11,"666 Messerschmidt",11,11,11);
 insert into Address (addressId,street,cityId,stateId,zipId) values (12,"333 Sunbrook",1,1,12);
 
-insert into Store (storeId,addressId) values (1,1);
-insert into Store (storeId,addressId) values (2,2);
+insert into Store (storeId,storeCode,addressId) values (1,"25d901",1);
+insert into Store (storeId,storeCode,addressId) values (2,"3c0234",2);
 
 insert into Person (personId,firstName,lastName,addressId) values (1,"Edithe","Driffill",3);
 insert into Person (personId,firstName,lastName,addressId) values (2,"Sherline","Bowerman",4);
@@ -172,15 +179,19 @@ insert into Person (personId,firstName,lastName,addressId) values (8,"Olympia","
 insert into Person (personId,firstName,lastName,addressId) values (9,"Tulley","McConville",11);
 insert into Person (personId,firstName,lastName,addressId) values (10,"Poppy","Parmby",12);
 
-insert into Sale (saleId, date,storeId,customerId,salespersonId) values (1,"2023-12-01",2,1,4);
-insert into Sale (saleId, date,storeId,customerId,salespersonId) values (2,"2023-11-03",2,2,4);
-insert into Sale (saleId, date,storeId,customerId,salespersonId) values (3,"2023-11-15",1,1,5);
+insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (1,"s001","2023-12-01",2,1,4);
+insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (2,"s002","2023-11-03",2,2,4);
+insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (3,"s003","2023-11-15",1,1,5);
+insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (4,"s004","2023-11-15",1,5,5);
 
 insert into SaleItem (saleItemId,itemId,saleId) values (1,1,1);
 insert into SaleItem (saleItemId,startDate,endDate,itemId,saleId) values (2,"2023-01-01","2025-12-25",2,2);
 insert into SaleItem (saleItemId,hoursBilled,servicemanId,itemId,saleId) values (3,2.0,6,3,3);
 insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (4,150.0,6,1);
 insert into SaleItem (saleItemId,phoneNumber,daysPurchased,itemId,saleId) values (5,"402-472-2401",95,7,2);
+insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (6,10.0,6,1);
+insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (7,25.5,6,2);
+insert into SaleItem (saleItemId,itemId,saleId) values (8,2,4);
 
 insert into Email (emailId, address, personId) values (1,"edriffill0@timesonline.co.uk",1);
 insert into Email (emailId, address, personId) values (2,"sbowerman1@reuters.com",2);
