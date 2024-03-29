@@ -1,4 +1,4 @@
-use cfrance3;
+use nbustard2;
 
 drop table if exists Email;
 drop table if exists SaleItem;
@@ -7,14 +7,39 @@ drop table if exists Sale;
 drop table if exists Person;
 drop table if exists Store;
 drop table if exists Address;
+drop table if exists Zip;
+drop table if exists City;
+drop table if exists State;
+
+create table State (
+stateId int not null primary key auto_increment,
+abbreviation varchar(2)
+);
+
+create table City (
+cityId int not null primary key auto_increment,
+name varchar(256) not null,
+stateId int not null,
+foreign key (stateId) references State(stateId)
+);
+
+create table Zip (
+zipId int not null primary key auto_increment,
+zipcode int(5) not null,
+cityId int not null,
+foreign key (cityId) references City(cityId)
+);
 
 create table Address (
-  addressId int not null primary key auto_increment,
-  street varchar(40) not null,
-  city varchar(20) not null,
-  state varchar(2) not null,
-  zip int(5) not null
-  );
+addressId int not null primary key auto_increment,
+street varchar(40) not null,
+cityId int not null,
+stateId int not null,
+zipId int not null,
+foreign key (stateId) references State(stateId),
+foreign key (cityId) references City(cityId),
+foreign key (zipId) references Zip(zipId)
+);
 
 create table Store (
 storeId int not null primary key auto_increment,
@@ -27,7 +52,7 @@ personId int not null primary key auto_increment,
 firstName varchar(256) not null,
 lastName varchar(256) not null,
 storeId int,
-addressId int,
+addressId int not null,
 foreign key (storeId) references Store(storeId),
 foreign key (addressId) references Address(addressId)
 );
@@ -35,9 +60,9 @@ foreign key (addressId) references Address(addressId)
 create table Sale (
 saleId int not null primary key auto_increment,
 date varchar(10) not null,
-storeId int,
-customerId int,
-salespersonId int,
+storeId int not null,
+customerId int not null,
+salespersonId int not null,
 foreign key (storeId) references Store(storeId),
 foreign key (customerId) references Person(personId),
 foreign key (salespersonId) references Person(personId)
@@ -45,13 +70,13 @@ foreign key (salespersonId) references Person(personId)
 
 create table Item(
 itemId int not null primary key auto_increment,
-type varchar(1),
-name varchar(256),
+baseCost double not null,
+type varchar(1) not null,
+name varchar(256) not null
 );
 
 create table SaleItem (
 saleItemId int not null primary key auto_increment,
-baseCost double,
 startDate varchar(10),
 endDate varchar(10),
 hoursBilled double,
@@ -59,20 +84,56 @@ servicemanId int,
 gbsPurchased double,
 phoneNumber varchar(12),
 daysPurchased int,
-itemId int,
-saleId int,
+itemId int not null,
+saleId int not null,
 foreign key (itemId) references Item(itemId),
 foreign key (saleId) references Sale(saleId)
 );
 
 create table Email (
 emailId int not null primary key auto_increment,
-address varchar(256),
+address varchar(256) not null,
 personId int not null,
 foreign key (personId) references Person(personId)
 );
 
-#TODO: match queries to fit new parameters for item and saleitem
+insert into State (stateId, abbreviation) values (1,"VA");
+insert into State (stateId, abbreviation) values (2,"TX");
+insert into State (stateId, abbreviation) values (3,"IN");
+insert into State (stateId, abbreviation) values (4,"MI");
+insert into State (stateId, abbreviation) values (5,"NY");
+insert into State (stateId, abbreviation) values (6,"FL");
+insert into State (stateId, abbreviation) values (7,"NC");
+insert into State (stateId, abbreviation) values (8,"NV");
+insert into State (stateId, abbreviation) values (9,"CA");
+insert into State (stateId, abbreviation) values (10,"OK");
+insert into State (stateId, abbreviation) values (11,"PA");
+
+insert into City (cityId,name,stateId) values (1,"Roanoke",1);
+insert into City (cityId,name,stateId) values (2,"Dallas",2);
+insert into City (cityId,name,stateId) values (3,"Fort Wayne",3);
+insert into City (cityId,name,stateId) values (4,"Kalamazoo",4);
+insert into City (cityId,name,stateId) values (5,"Brooklyn",5);
+insert into City (cityId,name,stateId) values (6,"Saint Petersburg",6);
+insert into City (cityId,name,stateId) values (7,"Raleigh",7);
+insert into City (cityId,name,stateId) values (8,"Las Vegas",8);
+insert into City (cityId,name,stateId) values (9,"San Jose",9);
+insert into City (cityId,name,stateId) values (10,"Oklahoma City",10);
+insert into City (cityId,name,stateId) values (11,"Bethlehem",11);
+
+insert into Zip (zipId,zipcode,cityId) values (1,66205,1);
+insert into Zip (zipId,zipcode,cityId) values (2,85072,2);
+insert into Zip (zipId,zipcode,cityId) values (3,46857,3);
+insert into Zip (zipId,zipcode,cityId) values (4,49048,4);
+insert into Zip (zipId,zipcode,cityId) values (5,11236,5);
+insert into Zip (zipId,zipcode,cityId) values (6,33705,6);
+insert into Zip (zipId,zipcode,cityId) values (7,27615,7);
+insert into Zip (zipId,zipcode,cityId) values (8,89160,8);
+insert into Zip (zipId,zipcode,cityId) values (9,95155,9);
+insert into Zip (zipId,zipcode,cityId) values (10,73157,10);
+insert into Zip (zipId,zipcode,cityId) values (11,18018,11);
+insert into Zip (zipId,zipcode,cityId) values (12,24029,1);
+
 insert into Item (itemId,type,name,baseCost) values (1,"P","BlackBerry 4", 0.01);
 insert into Item (itemId,type,name,baseCost) values (2,"P","iPhone X", 999.00);
 insert into Item (itemId,type,name,baseCost) values (3,"S","Water Damage", 100.00);
@@ -84,22 +145,18 @@ insert into Item (itemId,type,name,baseCost) values (8,"P","iPhone 11", 1100.00)
 insert into Item (itemId,type,name,baseCost) values (9,"P","iPhone 14", 1600.00);
 insert into Item (itemId,type,name,baseCost) values (10,"P","iPhone 15", 1700.00);
 
-insert into Sale (saleId, date) values (1,"2023-12-01");
-insert into Sale (saleId, date) values (2,"2023-11-03");
-insert into Sale (saleId, date) values (3,"2023-11-15");
-
-insert into Address (addressId,street,city,state,zip) values (1,"250 Tomscot","Roanoke","VA",66205);
-insert into Address (addressId,street,city,state,zip) values (2,"1946 Farwell","Dallas","TX",85072);
-insert into Address (addressId,street,city,state,zip) values (3,"101 Autumn Leaf","Fort Wayne","IN",46857);
-insert into Address (addressId,street,city,state,zip) values (4,"4682 Quincy","Kalamazoo","MI",49048);
-insert into Address (addressId,street,city,state,zip) values (5,"02872 Bartillon","Brooklyn","NY",11236);
-insert into Address (addressId,street,city,state,zip) values (6,"1234 Lotheville","Saint Petersburg","FL",33705);
-insert into Address (addressId,street,city,state,zip) values (7,"9876 Goodland","Raleigh","NC",27615);
-insert into Address (addressId,street,city,state,zip) values (8,"457612 Petterle","Las Vegas","NV",89160);
-insert into Address (addressId,street,city,state,zip) values (9,"1 Maywood","San Jose","CA",95155);
-insert into Address (addressId,street,city,state,zip) values (10,"999 Goodland","Oklahoma City","OK",73157);
-insert into Address (addressId,street,city,state,zip) values (11,"666 Messerschmidt","Bethlehem","PA",18018);
-insert into Address (addressId,street,city,state,zip) values (12,"333 Sunbrook","Roanoke","VA",24029);
+insert into Address (addressId,street,cityId,stateId,zipId) values (1,"250 Tomscot",1,1,1);
+insert into Address (addressId,street,cityId,stateId,zipId) values (2,"1946 Farwell",2,2,2);
+insert into Address (addressId,street,cityId,stateId,zipId) values (3,"101 Autumn Leaf",3,3,3);
+insert into Address (addressId,street,cityId,stateId,zipId) values (4,"4682 Quincy",4,4,4);
+insert into Address (addressId,street,cityId,stateId,zipId) values (5,"02872 Bartillon",5,5,5);
+insert into Address (addressId,street,cityId,stateId,zipId) values (6,"1234 Lotheville",6,6,6);
+insert into Address (addressId,street,cityId,stateId,zipId) values (7,"9876 Goodland",7,7,7);
+insert into Address (addressId,street,cityId,stateId,zipId) values (8,"457612 Petterle",8,8,8);
+insert into Address (addressId,street,cityId,stateId,zipId) values (9,"1 Maywood",9,9,9);
+insert into Address (addressId,street,cityId,stateId,zipId) values (10,"999 Goodland",10,10,10);
+insert into Address (addressId,street,cityId,stateId,zipId) values (11,"666 Messerschmidt",11,11,11);
+insert into Address (addressId,street,cityId,stateId,zipId) values (12,"333 Sunbrook",1,1,12);
 
 insert into Store (storeId,addressId) values (1,1);
 insert into Store (storeId,addressId) values (2,2);
@@ -114,6 +171,10 @@ insert into Person (personId,firstName,lastName,addressId) values (7,"Verne","Ly
 insert into Person (personId,firstName,lastName,addressId) values (8,"Olympia","Mitrovic",10);
 insert into Person (personId,firstName,lastName,addressId) values (9,"Tulley","McConville",11);
 insert into Person (personId,firstName,lastName,addressId) values (10,"Poppy","Parmby",12);
+
+insert into Sale (saleId, date,storeId,customerId,salespersonId) values (1,"2023-12-01",2,1,4);
+insert into Sale (saleId, date,storeId,customerId,salespersonId) values (2,"2023-11-03",2,2,4);
+insert into Sale (saleId, date,storeId,customerId,salespersonId) values (3,"2023-11-15",1,1,5);
 
 insert into SaleItem (saleItemId,itemId,saleId) values (1,1,1);
 insert into SaleItem (saleItemId,startDate,endDate,itemId,saleId) values (2,"2023-01-01","2025-12-25",2,2);
@@ -131,8 +192,3 @@ insert into Email (emailId, address, personId) values (7,"vlynes6@thetimes.co.uk
 insert into Email (emailId, address, personId) values (8,"omitrovic7@freewebs.com",8);
 insert into Email (emailId, address, personId) values (9,"tmcconville8@ifeng.com",9);
 insert into Email (emailId, address, personId) values (10,"pparmby9@drupal.org",10);
-
-
-update Sale set storeId = 2,customerId = 1,salespersonId = 4 where saleId = 1;
-update Sale set storeId = 2,customerId = 2,salespersonId = 4 where saleId = 2;
-update Sale set storeId = 1,customerId = 1,salespersonId = 5 where saleId = 3;
