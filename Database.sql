@@ -47,11 +47,11 @@ create table Item(
 itemId int not null primary key auto_increment,
 type varchar(1),
 name varchar(256),
-baseCost double
 );
 
 create table SaleItem (
 saleItemId int not null primary key auto_increment,
+baseCost double,
 startDate varchar(10),
 endDate varchar(10),
 hoursBilled double,
@@ -72,6 +72,7 @@ personId int not null,
 foreign key (personId) references Person(personId)
 );
 
+#TODO: match queries to fit new parameters for item and saleitem
 insert into Item (itemId,type,name,baseCost) values (1,"P","BlackBerry 4", 0.01);
 insert into Item (itemId,type,name,baseCost) values (2,"P","iPhone X", 999.00);
 insert into Item (itemId,type,name,baseCost) values (3,"S","Water Damage", 100.00);
