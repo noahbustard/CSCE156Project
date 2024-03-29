@@ -1,6 +1,6 @@
-use nbustard2;
+use cfrance3;
 
-drop table if exists email;
+drop table if exists Email;
 drop table if exists SaleItem;
 drop table if exists Item;
 drop table if exists Sale;
@@ -10,10 +10,10 @@ drop table if exists Address;
 
 create table Address (
   addressId int not null primary key auto_increment,
-  street varchar(256) not null,
-  city varchar(256) not null,
-  state varchar(256) not null,
-  zip int not null
+  street varchar(40) not null,
+  city varchar(20) not null,
+  state varchar(2) not null,
+  zip int(5) not null
   );
 
 create table Store (
@@ -135,4 +135,3 @@ insert into Email (emailId, address, personId) values (10,"pparmby9@drupal.org",
 update Sale set storeId = 2,customerId = 1,salespersonId = 4 where saleId = 1;
 update Sale set storeId = 2,customerId = 2,salespersonId = 4 where saleId = 2;
 update Sale set storeId = 1,customerId = 1,salespersonId = 5 where saleId = 3;
-
