@@ -7,8 +7,8 @@ drop table if exists Email;
 drop table if exists SaleItem;
 drop table if exists Item;
 drop table if exists Sale;
-drop table if exists Person;
 drop table if exists Store;
+drop table if exists Person;
 drop table if exists Address;
 drop table if exists Zip;
 drop table if exists City;
@@ -45,21 +45,21 @@ foreign key (cityId) references City(cityId),
 foreign key (zipId) references Zip(zipId)
 );
 
-create table Store (
-storeId int not null primary key auto_increment,
-storeCode varchar(6) not null,
-addressId int not null,
-foreign key (addressId) references Address(addressId)
-);
-
 create table Person (
 personId int not null primary key auto_increment,
 firstName varchar(256) not null,
 lastName varchar(256) not null,
-storeId int,
 addressId int not null,
-foreign key (storeId) references Store(storeId),
 foreign key (addressId) references Address(addressId)
+);
+
+create table Store (
+storeId int not null primary key auto_increment,
+storeCode varchar(6) not null,
+addressId int not null,
+managerId int not null,
+foreign key (addressId) references Address(addressId),
+foreign key (managerId) references Person(personId)
 );
 
 create table Sale (
@@ -165,19 +165,19 @@ insert into Address (addressId,street,cityId,stateId,zipId) values (10,"999 Good
 insert into Address (addressId,street,cityId,stateId,zipId) values (11,"666 Messerschmidt",11,11,11);
 insert into Address (addressId,street,cityId,stateId,zipId) values (12,"333 Sunbrook",1,1,12);
 
-insert into Store (storeId,storeCode,addressId) values (1,"25d901",1);
-insert into Store (storeId,storeCode,addressId) values (2,"3c0234",2);
-
 insert into Person (personId,firstName,lastName,addressId) values (1,"Edithe","Driffill",3);
 insert into Person (personId,firstName,lastName,addressId) values (2,"Sherline","Bowerman",4);
 insert into Person (personId,firstName,lastName,addressId) values (3,"Rockey","Barrick",5);
-insert into Person (personId,firstName,lastName,storeId,addressId) values (4,"Krystalle","Shier",1,6);
-insert into Person (personId,firstName,lastName,storeId,addressId) values (5,"Sisile","Lammerts",2,7);
+insert into Person (personId,firstName,lastName,addressId) values (4,"Krystalle","Shier",6);
+insert into Person (personId,firstName,lastName,addressId) values (5,"Sisile","Lammerts",7);
 insert into Person (personId,firstName,lastName,addressId) values (6,"Costa","Martino",8);
 insert into Person (personId,firstName,lastName,addressId) values (7,"Verne","Lynes",9);
 insert into Person (personId,firstName,lastName,addressId) values (8,"Olympia","Mitrovic",10);
 insert into Person (personId,firstName,lastName,addressId) values (9,"Tulley","McConville",11);
 insert into Person (personId,firstName,lastName,addressId) values (10,"Poppy","Parmby",12);
+
+insert into Store (storeId,storeCode,addressId, managerId) values (1,"25d901",1,4);
+insert into Store (storeId,storeCode,addressId, managerId) values (2,"3c0234",2,5);
 
 insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (1,"s001","2023-12-01",2,1,4);
 insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (2,"s002","2023-11-03",2,2,4);
