@@ -3,6 +3,7 @@ Drops any existing tables to ensure only data listed
 below has been inserted into the tables
 */
 
+
 drop table if exists Email;
 drop table if exists SaleItem;
 drop table if exists Item;
@@ -10,43 +11,18 @@ drop table if exists Sale;
 drop table if exists Store;
 drop table if exists Person;
 drop table if exists Address;
-drop table if exists Zip;
-drop table if exists City;
-drop table if exists State;
-
-
-create table State (
-stateId int not null primary key auto_increment,
-abbreviation varchar(2)
-);
-
-create table City (
-cityId int not null primary key auto_increment,
-name varchar(256) not null,
-stateId int not null,
-foreign key (stateId) references State(stateId)
-);
-
-create table Zip (
-zipId int not null primary key auto_increment,
-zipcode int(5) not null,
-cityId int not null,
-foreign key (cityId) references City(cityId)
-);
 
 create table Address (
 addressId int not null primary key auto_increment,
 street varchar(40) not null,
-cityId int not null,
-stateId int not null,
-zipId int not null,
-foreign key (stateId) references State(stateId),
-foreign key (cityId) references City(cityId),
-foreign key (zipId) references Zip(zipId)
+city varchar(40) not null,
+state varchar(2) not null,
+zip int not null
 );
 
 create table Person (
 personId int not null primary key auto_increment,
+uuid varchar(36) not null,
 firstName varchar(256) not null,
 lastName varchar(256) not null,
 addressId int not null,
@@ -105,42 +81,6 @@ personId int not null,
 foreign key (personId) references Person(personId)
 );
 
-insert into State (stateId, abbreviation) values (1,"VA");
-insert into State (stateId, abbreviation) values (2,"TX");
-insert into State (stateId, abbreviation) values (3,"IN");
-insert into State (stateId, abbreviation) values (4,"MI");
-insert into State (stateId, abbreviation) values (5,"NY");
-insert into State (stateId, abbreviation) values (6,"FL");
-insert into State (stateId, abbreviation) values (7,"NC");
-insert into State (stateId, abbreviation) values (8,"NV");
-insert into State (stateId, abbreviation) values (9,"CA");
-insert into State (stateId, abbreviation) values (10,"OK");
-insert into State (stateId, abbreviation) values (11,"PA");
-
-insert into City (cityId,name,stateId) values (1,"Roanoke",1);
-insert into City (cityId,name,stateId) values (2,"Dallas",2);
-insert into City (cityId,name,stateId) values (3,"Fort Wayne",3);
-insert into City (cityId,name,stateId) values (4,"Kalamazoo",4);
-insert into City (cityId,name,stateId) values (5,"Brooklyn",5);
-insert into City (cityId,name,stateId) values (6,"Saint Petersburg",6);
-insert into City (cityId,name,stateId) values (7,"Raleigh",7);
-insert into City (cityId,name,stateId) values (8,"Las Vegas",8);
-insert into City (cityId,name,stateId) values (9,"San Jose",9);
-insert into City (cityId,name,stateId) values (10,"Oklahoma City",10);
-insert into City (cityId,name,stateId) values (11,"Bethlehem",11);
-
-insert into Zip (zipId,zipcode,cityId) values (1,66205,1);
-insert into Zip (zipId,zipcode,cityId) values (2,85072,2);
-insert into Zip (zipId,zipcode,cityId) values (3,46857,3);
-insert into Zip (zipId,zipcode,cityId) values (4,49048,4);
-insert into Zip (zipId,zipcode,cityId) values (5,11236,5);
-insert into Zip (zipId,zipcode,cityId) values (6,33705,6);
-insert into Zip (zipId,zipcode,cityId) values (7,27615,7);
-insert into Zip (zipId,zipcode,cityId) values (8,89160,8);
-insert into Zip (zipId,zipcode,cityId) values (9,95155,9);
-insert into Zip (zipId,zipcode,cityId) values (10,73157,10);
-insert into Zip (zipId,zipcode,cityId) values (11,18018,11);
-insert into Zip (zipId,zipcode,cityId) values (12,24029,1);
 
 insert into Item (itemId,itemCode,type,name,baseCost) values (1,"e001","P","BlackBerry 4", 0.01);
 insert into Item (itemId,itemCode,type,name,baseCost) values (2,"e002","P","iPhone X", 999.00);
@@ -153,29 +93,29 @@ insert into Item (itemId,itemCode,type,name,baseCost) values (8,"e004","P","iPho
 insert into Item (itemId,itemCode,type,name,baseCost) values (9,"e005","P","iPhone 14", 1600.00);
 insert into Item (itemId,itemCode,type,name,baseCost) values (10,"e006","P","iPhone 15", 1700.00);
 
-insert into Address (addressId,street,cityId,stateId,zipId) values (1,"250 Tomscot",1,1,1);
-insert into Address (addressId,street,cityId,stateId,zipId) values (2,"1946 Farwell",2,2,2);
-insert into Address (addressId,street,cityId,stateId,zipId) values (3,"101 Autumn Leaf",3,3,3);
-insert into Address (addressId,street,cityId,stateId,zipId) values (4,"4682 Quincy",4,4,4);
-insert into Address (addressId,street,cityId,stateId,zipId) values (5,"02872 Bartillon",5,5,5);
-insert into Address (addressId,street,cityId,stateId,zipId) values (6,"1234 Lotheville",6,6,6);
-insert into Address (addressId,street,cityId,stateId,zipId) values (7,"9876 Goodland",7,7,7);
-insert into Address (addressId,street,cityId,stateId,zipId) values (8,"457612 Petterle",8,8,8);
-insert into Address (addressId,street,cityId,stateId,zipId) values (9,"1 Maywood",9,9,9);
-insert into Address (addressId,street,cityId,stateId,zipId) values (10,"999 Goodland",10,10,10);
-insert into Address (addressId,street,cityId,stateId,zipId) values (11,"666 Messerschmidt",11,11,11);
-insert into Address (addressId,street,cityId,stateId,zipId) values (12,"333 Sunbrook",1,1,12);
+insert into Address (addressId,street,city,state,zip) values (1,"250 Tomscot","Roanoke","VA",66205);
+insert into Address (addressId,street,city,state,zip) values (2,"1946 Farwell","dallas","TX",85072);
+insert into Address (addressId,street,city,state,zip) values (3,"101 Autumn Leaf","Fort Wayne","IN",46857);
+insert into Address (addressId,street,city,state,zip) values (4,"4682 Quincy","Kalamazoo","MI",49048);
+insert into Address (addressId,street,city,state,zip) values (5,"02872 Bartillon","Brooklyn","NY",11236);
+insert into Address (addressId,street,city,state,zip) values (6,"1234 Lotheville","Saint Petersburg","FL",33705);
+insert into Address (addressId,street,city,state,zip) values (7,"9876 Goodland","Raleigh","NC",27615);
+insert into Address (addressId,street,city,state,zip) values (8,"457612 Petterle","Lav Vegas","NV",89160);
+insert into Address (addressId,street,city,state,zip) values (9,"1 Maywood","San Jose","CA",95155);
+insert into Address (addressId,street,city,state,zip) values (10,"999 Goodland","Oklahoma City","OK",73157);
+insert into Address (addressId,street,city,state,zip) values (11,"666 Messerschmidt","Bethlemehem","PA",18018);
+insert into Address (addressId,street,city,state,zip) values (12,"333 Sunbrook","Roanoke","VA",24029);
 
-insert into Person (personId,firstName,lastName,addressId) values (1,"Edithe","Driffill",3);
-insert into Person (personId,firstName,lastName,addressId) values (2,"Sherline","Bowerman",4);
-insert into Person (personId,firstName,lastName,addressId) values (3,"Rockey","Barrick",5);
-insert into Person (personId,firstName,lastName,addressId) values (4,"Krystalle","Shier",6);
-insert into Person (personId,firstName,lastName,addressId) values (5,"Sisile","Lammerts",7);
-insert into Person (personId,firstName,lastName,addressId) values (6,"Costa","Martino",8);
-insert into Person (personId,firstName,lastName,addressId) values (7,"Verne","Lynes",9);
-insert into Person (personId,firstName,lastName,addressId) values (8,"Olympia","Mitrovic",10);
-insert into Person (personId,firstName,lastName,addressId) values (9,"Tulley","McConville",11);
-insert into Person (personId,firstName,lastName,addressId) values (10,"Poppy","Parmby",12);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (1,"7b70a695-33c1-4a1a-9c95-51054f4017f6","Edithe","Driffill",3);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (2,"fdce2d71-7a42-42c8-b6a3-53dad5d21194","Sherline","Bowerman",4);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (3,"9a70a695-33c1-4a1a-9c95-51054f4018f6","Rockey","Barrick",5);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (4,"65405595-a97d-4939-adf4-71dcc2ff7b3d","Krystalle","Shier",6);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (5,"961b7c38-6c9b-463c-8a8d-a784fd0afd9c","Sisile","Lammerts",7);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (6,"20ff9b2b-715a-4833-b56a-e81a987e0ac8","Costa","Martino",8);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (7,"f934513d-2072-494c-ad1e-fcaea12e3784","Verne","Lynes",9);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (8,"92693cae-5788-47e9-9d67-cb1a3355b1f1","Olympia","Mitrovic",10);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (9,"fdf2e7ff-c814-47ea-8f85-df79d5cf9eef","Tulley","McConville",11);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (10,"fdce2d71-7a42-42c8-b6a3-53dad5d21194","Poppy","Parmby",12);
 
 insert into Store (storeId,storeCode,addressId, managerId) values (1,"25d901",1,4);
 insert into Store (storeId,storeCode,addressId, managerId) values (2,"3c0234",2,5);
