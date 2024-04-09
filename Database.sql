@@ -22,7 +22,7 @@ zip int not null
 
 create table Person (
 personId int not null primary key auto_increment,
-uuid varchar(36) not null,
+uuid varchar(36) not null unique,
 firstName varchar(256) not null,
 lastName varchar(256) not null,
 addressId int not null,
@@ -31,7 +31,7 @@ foreign key (addressId) references Address(addressId)
 
 create table Store (
 storeId int not null primary key auto_increment,
-storeCode varchar(6) not null,
+storeCode varchar(6) not null unique,
 addressId int not null,
 managerId int not null,
 foreign key (addressId) references Address(addressId),
@@ -40,7 +40,7 @@ foreign key (managerId) references Person(personId)
 
 create table Sale (
 saleId int not null primary key auto_increment,
-saleCode varchar(4) not null,
+saleCode varchar(4) not null unique,
 date varchar(10) not null,
 storeId int not null,
 customerId int not null,
@@ -52,7 +52,7 @@ foreign key (salespersonId) references Person(personId)
 
 create table Item(
 itemId int not null primary key auto_increment,
-itemCode varchar(4) not null,
+itemCode varchar(4) not null unique,
 baseCost double not null,
 type varchar(1) not null,
 name varchar(256) not null
@@ -115,7 +115,7 @@ insert into Person (personId,uuid,firstName,lastName,addressId) values (6,"20ff9
 insert into Person (personId,uuid,firstName,lastName,addressId) values (7,"f934513d-2072-494c-ad1e-fcaea12e3784","Verne","Lynes",9);
 insert into Person (personId,uuid,firstName,lastName,addressId) values (8,"92693cae-5788-47e9-9d67-cb1a3355b1f1","Olympia","Mitrovic",10);
 insert into Person (personId,uuid,firstName,lastName,addressId) values (9,"fdf2e7ff-c814-47ea-8f85-df79d5cf9eef","Tulley","McConville",11);
-insert into Person (personId,uuid,firstName,lastName,addressId) values (10,"fdce2d71-7a42-42c8-b6a3-53dad5d21194","Poppy","Parmby",12);
+insert into Person (personId,uuid,firstName,lastName,addressId) values (10,"fdce2d71-7a42-42c8-b6a3-53dad5d21193","Poppy","Parmby",12);
 
 insert into Store (storeId,storeCode,addressId, managerId) values (1,"25d901",1,4);
 insert into Store (storeId,storeCode,addressId, managerId) values (2,"3c0234",2,5);
