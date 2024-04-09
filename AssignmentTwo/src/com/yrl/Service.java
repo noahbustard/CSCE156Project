@@ -6,25 +6,32 @@ package com.yrl;
  * Date: 2024-03-07
  * 
  * Service class represents any item where a servicemen completed
- * a service. Calculates cost based on baseCost * hoursBilled.
+ * a service. Calculates cost based on pricePerHour * hoursBilled.
  * Is an extension of the Item class.
  */
 public class Service extends Item {
 
-	private Double hoursBilled;
+	private double hoursBilled;
 	private Person serviceman;
+	private double pricePerHour;
 
-	public Service(String itemCode, String name, Double baseCost, Double hoursBilled,
+	public Service(String itemCode, String name, Double pricePerHour, Double hoursBilled,
 			Person serviceman) {
-		super(itemCode, name, baseCost);
+		super(itemCode, name);
 		this.hoursBilled = hoursBilled;
 		this.serviceman = serviceman;
+		this.pricePerHour = pricePerHour;
 	}
 
-	public Service(String itemCode, String name, Double baseCost) {
-		super(itemCode, name, baseCost);;
+	public Service(String itemCode, String name, Double pricePerHour) {
+		super(itemCode, name);
+		this.pricePerHour = pricePerHour;
 	}
 	
+
+	public double getPricePerHour() {
+		return this.pricePerHour;
+	}
 
 	public Double getHoursBilled() {
 		return this.hoursBilled;
@@ -36,11 +43,11 @@ public class Service extends Item {
 
 	@Override
 	public Double getCost() {
-		return this.getBaseCost() * this.hoursBilled;
+		return this.getPricePerHour() * this.hoursBilled;
 		
 	}
 	public Double getTax() {
-		return this.getBaseCost() * this.hoursBilled * 0.035;
+		return this.getCost() * 0.035;
 	}
 
 	@Override
@@ -51,6 +58,11 @@ public class Service extends Item {
 	@Override
 	public String toString() {
 		return this.getName() +  " (" + this.getItemCode() + ") - Served by " + this.serviceman.getFullName() + 
-				"\n  	" + this.hoursBilled + " hours @ $" + this.getBaseCost() + "/hour";
+				"\n  	" + this.hoursBilled + " hours @ $" + this.getPricePerHour() + "/hour";
+	}
+
+	@Override
+	public Double getBaseCost() {
+		return this.getPricePerHour();
 	}
 }

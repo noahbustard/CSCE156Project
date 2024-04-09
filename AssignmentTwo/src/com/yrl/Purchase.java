@@ -11,8 +11,15 @@ package com.yrl;
  */
 public class Purchase extends Item {
 	
-	public Purchase(String itemCode, String name, Double baseCost) {
-		super(itemCode, name, baseCost);
+	private double Price;
+	
+	public Purchase(String itemCode, String name, Double price) {
+		super(itemCode, name);
+		this.Price = price;
+	}
+
+	public double getPrice() {
+		return this.Price;
 	}
 
 	@Override
@@ -26,11 +33,16 @@ public class Purchase extends Item {
 	}
 	@Override
 	public Double getCost() {
-		return super.getBaseCost();
+		return this.getPrice();
 	}
 	@Override
 	public Double getTax() {
-		return super.getBaseCost() * 0.065;
+		return this.getPrice() * 0.065;
+	}
+
+	@Override
+	public Double getBaseCost() {
+		return this.getPrice();
 	}
 
 }

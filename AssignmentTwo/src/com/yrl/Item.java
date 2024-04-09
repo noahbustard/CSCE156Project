@@ -17,12 +17,10 @@ import java.util.Map;
 public abstract class Item {
 	private String itemCode;
 	private String name;
-	private double baseCost;
 	
-	public Item( String itemCode, String name, Double baseCost) {
+	public Item( String itemCode, String name) {
 		this.itemCode = itemCode;
 		this.name = name;
-		this.baseCost = baseCost;
 	}
 
 	public String getItemCode() {
@@ -36,12 +34,10 @@ public abstract class Item {
 	public abstract Double getCost();
 
 	public abstract String getType();
-
-	public  Double getBaseCost() {
-		return this.baseCost;
-	};
 	
 	public abstract Double getTax();
+	
+	public abstract Double getBaseCost();
 		
 	
 	/**
@@ -61,8 +57,6 @@ public abstract class Item {
 			itemInfoMap.put(itemCode, item);
 			
 		}
-		//System.out.println("ran");
-		//System.out.println(itemInfoMap);
 		return itemInfoMap;
 	}
 
