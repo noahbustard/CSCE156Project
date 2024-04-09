@@ -22,7 +22,7 @@ public class Purchase extends Item {
 
 	@Override
 	public String toString() {
-		return "\nPurchase\nItemCode=" + this.getItemCode() + "\nName=" + this.getName() + "\nbaseCost=" + this.getBaseCost();
+		return this.getName() + " (" + this.getItemCode() + ")";
 	}
 	@Override
 	public Double getCost() {

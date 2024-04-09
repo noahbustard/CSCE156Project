@@ -83,6 +83,9 @@ public class DataLoader {
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
+			if (tokens.length < 2) {
+				continue;
+			}
 			String saleCode = tokens[0];
 			String itemCode = tokens[1];
 			if (!saleItemsMap.containsKey(tokens[0])) {
@@ -122,7 +125,9 @@ public class DataLoader {
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
-			
+			if (tokens.length < 2) {
+				continue;
+			}
 			String saleCode = tokens[0];
 			String itemCode = tokens[1];
 			Sale sale = saleMap.get(saleCode);

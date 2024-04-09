@@ -49,8 +49,8 @@ public class VoicePlan extends Item {
 
 	@Override
 	public String toString() {
-		return "VoicePlan\n" + "ItemCode=" + super.getItemCode() + "PhoneNumber=" + this.phoneNumber + "\nDaysPurchased=" + this.daysPurchased
-				+ "\nbaseCost=" + this.getBaseCost();
+		return this.getName() + " (" + this.getItemCode() + ")  - Voice " + this.phoneNumber + "\n  	"
+				+ this.daysPurchased + " days @ $" + this.getBaseCost() + " / 30 days";
 	}
 
 }

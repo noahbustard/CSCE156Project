@@ -50,11 +50,7 @@ public class Service extends Item {
 
 	@Override
 	public String toString() {
-		if (this.serviceman != null) {
-			return "\nService\nItemCode= " + this.getItemCode()  + "\nHoursBilled=" + this.hoursBilled + "\nServiceman=" + this.serviceman + ",\nCostPerHour=" + this.getBaseCost();
-		}
-		else {
-			return "\nService\nItemCode=" + this.getItemCode()  + "\nHoursBilled=" + this.hoursBilled + "\nServiceman=null" + ",\nCostPerHour=" + this.getBaseCost();
-		}
+		return this.getName() +  " (" + this.getItemCode() + ") - Served by " + this.serviceman.getFullName() + 
+				"\n  	" + this.hoursBilled + " hours @ $" + this.getBaseCost() + "/hour";
 	}
 }

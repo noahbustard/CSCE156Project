@@ -40,8 +40,8 @@ public class DataPlan extends Item {
 
 	@Override
 	public String toString() {
-		return "DataPlan\nItemCode= " + this.getItemCode() + "\ngbsPurchased=" + gbsPurchased + "\ncostPerGb="
-				+ this.getBaseCost();
+		return this.getName() + " (" + this.getItemCode() + ") - Data\n"
+				+ this.gbsPurchased + " GB @ $" + this.getBaseCost() + "/GB";
 	}
 
 }

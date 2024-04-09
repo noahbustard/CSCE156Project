@@ -26,7 +26,8 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return street + ", " + city + ", " + state + ", " + zip;
+		return street + "\n        "
+				+ this.city + " " + this.state + " " + this.zip;
 	}
 
 	public String getStreet() {
