@@ -7,8 +7,8 @@ drop table if exists Email;
 drop table if exists SaleItem;
 drop table if exists Item;
 drop table if exists Sale;
-drop table if exists Person;
 drop table if exists Store;
+drop table if exists Person;
 drop table if exists Address;
 drop table if exists Zip;
 drop table if exists City;
@@ -94,7 +94,8 @@ daysPurchased int,
 itemId int not null,
 saleId int not null,
 foreign key (itemId) references Item(itemId),
-foreign key (saleId) references Sale(saleId)
+foreign key (saleId) references Sale(saleId),
+foreign key (servicemanId) references Person(personId)
 );
 
 create table Email (
