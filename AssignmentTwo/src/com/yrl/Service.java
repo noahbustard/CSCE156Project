@@ -14,6 +14,7 @@ public class Service extends Item {
 	private double hoursBilled;
 	private Person serviceman;
 	private double pricePerHour;
+	private int itemId;
 
 	public Service(String itemCode, String name, Double pricePerHour, Double hoursBilled,
 			Person serviceman) {
@@ -28,6 +29,11 @@ public class Service extends Item {
 		this.pricePerHour = pricePerHour;
 	}
 	
+	public Service(String itemCode, String name, Double pricePerHour, int itemId) {
+		super(itemCode, name);
+		this.pricePerHour = pricePerHour;
+		this.itemId = itemId;
+	}
 
 	public double getPricePerHour() {
 		return this.pricePerHour;
@@ -64,5 +70,9 @@ public class Service extends Item {
 	@Override
 	public Double getBaseCost() {
 		return this.getPricePerHour();
+	}
+
+	public int getItemId() {
+		return itemId;
 	}
 }

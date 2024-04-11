@@ -13,6 +13,7 @@ public class VoicePlan extends Item {
 	private String phoneNumber;
 	private Integer daysPurchased;
 	private double pricePer30Days;
+	private int itemId;
 
 	public VoicePlan(String itemCode, String name, Double pricePer30Days, String phoneNumber,
 			Integer daysPurchased) {
@@ -25,6 +26,12 @@ public class VoicePlan extends Item {
 	public VoicePlan(String itemCode, String name, Double pricePer30Days) {
 		super(itemCode, name);
 		this.pricePer30Days = pricePer30Days;
+	}
+	
+	public VoicePlan(String itemCode, String name, Double pricePer30Days, int itemId) {
+		super(itemCode, name);
+		this.pricePer30Days = pricePer30Days;
+		this.itemId = itemId;
 	}
 
 	public double getPricePer30Days() {

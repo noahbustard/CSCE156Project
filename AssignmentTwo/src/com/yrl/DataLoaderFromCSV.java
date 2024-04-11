@@ -195,11 +195,11 @@ public class DataLoaderFromCSV implements DataLoader {
 
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
-
+			int zipcode = Integer.parseInt(tokens[5]);
 			if (tokens.length == 6) {
 				Person manager = null;
-
-				Address a = new Address(tokens[2], tokens[3], tokens[4], tokens[5]);
+				
+				Address a = new Address(tokens[2], tokens[3], tokens[4], zipcode);
 
 				for (Person p : personList) {
 
@@ -241,9 +241,9 @@ public class DataLoaderFromCSV implements DataLoader {
 
 			String line = s.nextLine();
 			String tokens[] = line.split(",");
-
+			int zipcode = Integer.parseInt(tokens[6]);
 			if (tokens.length == 7) {
-				Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
+				Address a = new Address(tokens[3], tokens[4], tokens[5], zipcode);
 				personList.add(new Person(tokens[0], tokens[1], tokens[2], a));
 
 			} else if (tokens.length > 7) {
@@ -252,7 +252,7 @@ public class DataLoaderFromCSV implements DataLoader {
 				for (int i = 7; i < tokens.length; i++) {
 					emails.add(tokens[i]);
 				}
-				Address a = new Address(tokens[3], tokens[4], tokens[5], tokens[6]);
+				Address a = new Address(tokens[3], tokens[4], tokens[5], zipcode);
 				personList.add(new Person(tokens[0], tokens[1], tokens[2], a, emails));
 			}
 

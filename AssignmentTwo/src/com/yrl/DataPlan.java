@@ -12,6 +12,7 @@ package com.yrl;
 public class DataPlan extends Item {
 	private double gbsPurchased;
 	private double pricePerGb;
+	private int itemId;
 
 	public DataPlan(String itemCode, String name, Double pricePerGb, Double gbsPurchased) {
 		super(itemCode, name);
@@ -22,6 +23,12 @@ public class DataPlan extends Item {
 	public DataPlan(String itemCode, String name, Double pricePerGb) {
 		super(itemCode, name);
 		this.pricePerGb = pricePerGb;
+	}
+	
+	public DataPlan(String itemCode, String name, Double pricePerGb, int itemId) {
+		super(itemCode, name);
+		this.pricePerGb = pricePerGb;
+		this.itemId = itemId;
 	}
 
 	public Double getGbsPurchased() {
@@ -54,6 +61,10 @@ public class DataPlan extends Item {
 	@Override
 	public Double getBaseCost() {
 		return this.getPricePerGb();
+	}
+
+	public int getItemId() {
+		return itemId;
 	}
 
 }
