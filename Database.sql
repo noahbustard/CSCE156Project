@@ -3,7 +3,6 @@ Drops any existing tables to ensure only data listed
 below has been inserted into the tables
 */
 
-
 drop table if exists Email;
 drop table if exists SaleItem;
 drop table if exists Item;
@@ -144,3 +143,4 @@ insert into Email (emailId, address, personId) values (7,"vlynes6@thetimes.co.uk
 insert into Email (emailId, address, personId) values (8,"omitrovic7@freewebs.com",8);
 insert into Email (emailId, address, personId) values (9,"tmcconville8@ifeng.com",9);
 insert into Email (emailId, address, personId) values (10,"pparmby9@drupal.org",10);
+

@@ -7,11 +7,10 @@ import java.util.ArrayList;
  * @author Noah Bustard
  * @author Caden France
  * 
- * Date: 2024-03-08
+ *         Date: 2024-03-08
  * 
- * Perosn class represents customers,
- * managers, servicemen, salespersons.
- * Included emails and address along with name.
+ *         Perosn class represents customers, managers, servicemen,
+ *         salespersons. Included emails and address along with name.
  */
 
 public class Person {
@@ -20,6 +19,16 @@ public class Person {
 	private String lastName;
 	private Address address;
 	private List<String> emails;
+	private int personId;
+
+	public Person(String uuid, String firstName, String lastName, Address address, List<String> emails, int personId) {
+		this.uuid = uuid;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.emails = emails;
+		this.personId = personId;
+	}
 
 	public Person(String uuid, String firstName, String lastName, Address address) {
 		this.uuid = uuid;
@@ -40,9 +49,9 @@ public class Person {
 	public String getFirstName() {
 		return this.firstName;
 	}
-	
+
 	public String getFullName() {
-		String name = this.lastName+", "+this.firstName;
+		String name = this.lastName + ", " + this.firstName;
 		return name;
 	}
 
@@ -57,20 +66,21 @@ public class Person {
 	public List<String> getEmails() {
 		return this.emails;
 	}
-	
 
 	@Override
 	public String toString() {
 		if (this.emails == null) {
-			return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n"
-					+ "        []\n"
-					+ "        " + this.address;
+			return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n" + "        []\n" + "        "
+					+ this.address;
 		} else {
-			return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n"
-					+ "        " + this.emails.toString() + "\n"
-					+ "        " + this.address;
+			return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n" + "        "
+					+ this.emails.toString() + "\n" + "        " + this.address;
 		}
-		
+
+	}
+
+	public int getPersonId() {
+		return personId;
 	}
 
 }

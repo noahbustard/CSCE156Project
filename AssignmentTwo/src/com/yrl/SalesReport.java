@@ -244,7 +244,7 @@ public class SalesReport {
 //				saleCodeItemCodeMap);
 //		Map<Store, ArrayList<Sale>> storeMap = Store.createStoreMap(saleMap, storeList);
 		
-//		ArrayList<Person> personList = db.loadPersons();
+		ArrayList<Person> personList = db.loadPersons();
 //		ArrayList<Store> storeList = db.loadStores(personList);
 		ArrayList<Item> itemList = db.loadItems();
 

@@ -72,4 +72,8 @@ public class VoicePlan extends Item {
 		return this.getPricePer30Days();
 	}
 
+	public int getItemId() {
+		return itemId;
+	}
+
 }
