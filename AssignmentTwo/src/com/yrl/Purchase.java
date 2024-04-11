@@ -12,7 +12,15 @@ package com.yrl;
 public class Purchase extends Item {
 	
 	private double Price;
+	private int itemId;
+
 	
+	public Purchase(String itemCode, String name, double price, int itemId) {
+		super(itemCode, name);
+		Price = price;
+		this.itemId = itemId;
+	}
+
 	public Purchase(String itemCode, String name, Double price) {
 		super(itemCode, name);
 		this.Price = price;
@@ -45,4 +53,8 @@ public class Purchase extends Item {
 		return this.getPrice();
 	}
 
+	public int getItemId() {
+		return itemId;
+	}
+	
 }
