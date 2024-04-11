@@ -57,12 +57,20 @@ public class Person {
 	public List<String> getEmails() {
 		return this.emails;
 	}
+	
 
 	@Override
 	public String toString() {
-		return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n"
-	+ "        " + this.emails.toString() + "\n"
-	+ "        " + this.address;
+		if (this.emails == null) {
+			return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n"
+					+ "        []\n"
+					+ "        " + this.address;
+		} else {
+			return this.lastName + ", " + this.firstName + " (" + this.uuid + ")\n"
+					+ "        " + this.emails.toString() + "\n"
+					+ "        " + this.address;
+		}
+		
 	}
 
 }

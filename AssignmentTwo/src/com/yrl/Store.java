@@ -57,8 +57,8 @@ public class Store {
 	 * @param saleList
 	 * @return
 	 */
-	public static Map<Store, List<Sale>> createStoreMap(Map<String, Sale> saleMap, ArrayList<Store> storeList) {
-		Map<Store, List<Sale>> storeMap = new HashMap<>();
+	public static Map<Store, ArrayList<Sale>> createStoreMap(Map<String, Sale> saleMap, ArrayList<Store> storeList) {
+		Map<Store, ArrayList<Sale>> storeMap = new HashMap<>();
 		for (Store key : storeList) {
 			storeMap.put(key, new ArrayList<Sale>());
 		}

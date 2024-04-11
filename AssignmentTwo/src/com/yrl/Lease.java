@@ -31,8 +31,10 @@ public class Lease extends Purchase {
 
 	@Override
 	public String toString() {
+		int months = Period.between(this.startDate, this.endDate).getMonths();
+		months += Period.between(this.startDate, this.endDate).getYears() * 12;
 		return this.getName() + " (" + this.getItemCode() + ")  - Lease for "
-	+ Period.between(this.startDate, this.endDate).getMonths() + " Months";
+	+ months + " Months";
 	}
 	@Override
 	public Double getCost() {
