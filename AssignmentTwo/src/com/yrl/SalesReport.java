@@ -221,28 +221,9 @@ public class SalesReport {
 	}
 	
 	public static void main(String[] args) {
-		//
-		//Commented out lines are either loaded from CSV lines that aren't necesarry for the
-		//assignemt (I'm not deleting them just in case we need to see what successful data loading
-		//looks like) or commented out lines are load from database methods that aren't implemented yet.
-		//
-		
-		
-		
-		
-//		DataLoaderFromCSV csv = new DataLoaderFromCSV();
-		DataLoaderFromDatabase db = new DataLoaderFromDatabase();
-		
-//		ArrayList<Person> personList = csv.loadPersons();
-//		ArrayList<Store> storeList = csv.loadStores(personList);
-//		ArrayList<Item> itemList = csv.loadItems();
 
-//		Map<String, Item> itemInfoMap = Item.createItemInfoMap(itemList);
-//		Map<String, ArrayList<String>> saleCodeItemCodeMap = csv.loadSaleItemsMap();
-//		Map<String, Sale> saleMap = csv.loadSales(personList, storeList, itemInfoMap);
-//		Map<Sale, ArrayList<Item>> saleItemsMap = csv.loadSaleItems(personList, itemInfoMap, saleMap,
-//				saleCodeItemCodeMap);
-//		Map<Store, ArrayList<Sale>> storeMap = Store.createStoreMap(saleMap, storeList);
+		DataLoaderFromDatabase db = new DataLoaderFromDatabase();
+
 		
 		ArrayList<Person> personList = db.loadPersons();
 		ArrayList<Store> storeList = db.loadStores(personList);
