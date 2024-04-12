@@ -17,10 +17,12 @@ import java.util.Map;
 public abstract class Item {
 	private String itemCode;
 	private String name;
+	private int itemId;
 	
-	public Item( String itemCode, String name) {
+	public Item( String itemCode, String name, int itemId) {
 		this.itemCode = itemCode;
 		this.name = name;
+		this.itemId = itemId;
 	}
 
 	public String getItemCode() {
@@ -62,5 +64,9 @@ public abstract class Item {
 
 
 	public  abstract String toString();
+
+	public int getItemId() {
+		return itemId;
+	}
 
 }

@@ -103,7 +103,7 @@ public class DataLoaderFromCSV implements DataLoader {
 	}
 
 	/**
-	 * Loads saleItems from CSV file. saleItems are items that were involved in a
+	 * Loads saleItems from CSV file. SaleItems are items that were involved in a
 	 * sale and have more specific information like saleCode or specifics on
 	 * quantity like gbsPurchased on a Data Plan.
 	 * 

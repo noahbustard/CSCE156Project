@@ -1,6 +1,7 @@
 package com.yrl;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -98,17 +99,90 @@ public class DataLoaderFromDatabase implements DataLoader {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		System.out.println(saleItemsMap);
 		return saleItemsMap;
 	}
 
+	/**
+	 * Loads saleItems into a map where they are paired with the sale they are a
+	 * part of. Loads the sale items from a database.
+	 */
 	@Override
 	public Map<Sale, ArrayList<Item>> loadSaleItems(ArrayList<Person> personList, Map<String, Item> itemInfoMap,
 			Map<String, Sale> saleMap, Map<String, ArrayList<String>> saleCodeItemCodeMap) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Map<Sale, ArrayList<Item>> saleItemsMap = new HashMap<>();
+		for (Map.Entry<String, Sale> entry : saleMap.entrySet()) {
+			saleItemsMap.put(entry.getValue(), new ArrayList<Item>());
+		}
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+
+			String query = "select saleItemId, startDate, endDate, hoursBilled, servicemanId, "
+					+ "gbsPurchased, phoneNumber, daysPurchased, itemId, saleId from SaleItem";
+			PreparedStatement psSaleItem = conn.prepareStatement(query);
+			ResultSet rsSaleItem = psSaleItem.executeQuery();
+			while (rsSaleItem.next()) {
+				int saleItemId = rsSaleItem.getInt(1);
+				int itemId = rsSaleItem.getInt(9);
+				int saleId = rsSaleItem.getInt(10);
+				Item item = null;
+				Sale sale = null;
+
+				for (Map.Entry<String, Item> entry : itemInfoMap.entrySet()) {
+					if (entry.getValue().getItemId() == itemId) {
+						item = entry.getValue();
+					}
+				}
+				for (Map.Entry<String, Sale> entry : saleMap.entrySet()) {
+					if (entry.getValue().getSaleId() == saleId) {
+						sale = entry.getValue();
+					}
+				}
+				if (rsSaleItem.getString(2) != null) {
+					LocalDate startDate = LocalDate.parse(rsSaleItem.getString(2));
+					LocalDate endDate = LocalDate.parse(rsSaleItem.getString(3));
+					saleItemsMap.get(sale).add(new Lease(item.getItemCode(), item.getName(), item.getBaseCost(),
+							item.getItemId(), startDate, endDate, saleItemId));
+				} else if (rsSaleItem.getString(4) != null) {
+					Double hoursBilled = rsSaleItem.getDouble(4);
+					int servicemanId = rsSaleItem.getInt(5);
+					for (Person p : personList) {
+						if (p.getPersonId() == servicemanId) {
+							saleItemsMap.get(sale).add(new Service(item.getItemCode(), item.getName(), itemId,
+									hoursBilled, p, item.getBaseCost(), saleItemId));
+						}
+					}
+				} else if (rsSaleItem.getString(6) != null) {
+					Double gbsPurchased = rsSaleItem.getDouble(6);
+					saleItemsMap.get(sale).add(new DataPlan(item.getItemCode(), item.getName(), itemId, 
+							gbsPurchased, item.getBaseCost(), saleItemId));
+				} else if (rsSaleItem.getString(7) != null) {
+					String phoneNumber = rsSaleItem.getString(7);
+					int daysPurchased = rsSaleItem.getInt(8);
+					saleItemsMap.get(sale).add(new VoicePlan(item.getItemCode(), item.getName(), itemId, 
+							phoneNumber, daysPurchased, item.getBaseCost(), saleItemId));
+				} else {
+					saleItemsMap.get(sale).add(new Purchase(item.getItemCode(), item.getName(), itemId, 
+							item.getBaseCost(), saleItemId));
+				}
+
+			}
+
+			rsSaleItem.close();
+			psSaleItem.close();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return saleItemsMap;
 	}
 
+	/**
+	 * Loads stores from a database and puts them into a list. Accesses managaer via
+	 * Person Id and the PersonList as a parameter.
+	 */
 	@Override
 	public ArrayList<Store> loadStores(ArrayList<Person> personList) {
 		ArrayList<Store> storeList = new ArrayList<Store>();
@@ -205,11 +279,56 @@ public class DataLoaderFromDatabase implements DataLoader {
 		return personList;
 	}
 
+	/**
+	 * Loads Sale data into Sale list. Has Customer and salesperson(manager)
+	 * constructed into each iteration.
+	 */
 	@Override
 	public Map<String, Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList,
 			Map<String, Item> itemInfoMap) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Sale> saleMap = new HashMap<String, Sale>();
+
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+
+			String query = "select saleCode, s.storeId, customerId, salespersonId, "
+					+ "date, saleId from Sale join Store as s on Sale.storeId = s.storeId";
+			PreparedStatement psSale = conn.prepareStatement(query);
+			ResultSet rsSale = psSale.executeQuery();
+
+			while (rsSale.next()) {
+				String saleCode = rsSale.getString(1);
+				int storeId = rsSale.getInt(2);
+				int customerId = rsSale.getInt(3);
+				int salespersonId = rsSale.getInt(4);
+				LocalDate date = LocalDate.parse(rsSale.getString(5));
+				int saleId = rsSale.getInt(6);
+				Person salesperson = null;
+				Person customer = null;
+				Store store = null;
+				for (Person p : personList) {
+					if (customerId == p.getPersonId()) {
+						customer = p;
+					} else if (salespersonId == p.getPersonId()) {
+						salesperson = p;
+					}
+				}
+				for (Store s : storeList) {
+					if (storeId == s.getStoreId()) {
+						store = s;
+					}
+				}
+				saleMap.put(saleCode, new Sale(saleCode, store, customer, salesperson, date, saleId));
+			}
+			rsSale.close();
+			psSale.close();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return saleMap;
 	}
 
 }

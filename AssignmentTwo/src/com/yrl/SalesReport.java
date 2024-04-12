@@ -250,14 +250,14 @@ public class SalesReport {
 
 		Map<String, Item> itemInfoMap = Item.createItemInfoMap(itemList);
 		Map<String, ArrayList<String>> saleCodeItemCodeMap = db.loadSaleItemsMap();
-//		Map<String, Sale> saleMap = db.loadSales(personList, storeList, itemInfoMap);
-//		Map<Sale, ArrayList<Item>> saleItemsMap = db.loadSaleItems(personList, itemInfoMap, saleMap,
-//				saleCodeItemCodeMap);
-//		Map<Store, ArrayList<Sale>> storeMap = Store.createStoreMap(saleMap, storeList);
+		Map<String, Sale> saleMap = db.loadSales(personList, storeList, itemInfoMap);
+		Map<Sale, ArrayList<Item>> saleItemsMap = db.loadSaleItems(personList, itemInfoMap, saleMap,
+				saleCodeItemCodeMap);
+		Map<Store, ArrayList<Sale>> storeMap = Store.createStoreMap(saleMap, storeList);
 
-//		SalesReport.generateReportByTotal(saleItemsMap);
-//		SalesReport.generateReportByStore(saleItemsMap, storeMap);
-//		SalesReport.generateReportByItem(saleItemsMap);
+		SalesReport.generateReportByTotal(saleItemsMap);
+		SalesReport.generateReportByStore(saleItemsMap, storeMap);
+		SalesReport.generateReportByItem(saleItemsMap);
 		
 		
 		
