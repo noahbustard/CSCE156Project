@@ -10,8 +10,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class loads data from a database that is formatted into lists, arraylists,
+ * and maps to be later processed into reports.
+ * 
+ * @author noahbustard
+ * @author cadenfrance
+ * 
+ *         2024-04-11
+ */
 public class DataLoaderFromDatabase implements DataLoader {
 
+	/**
+	 * Loads items from a database. Loads the item based on the type which is
+	 * identified from the database type variable.
+	 */
 	@Override
 	public ArrayList<Item> loadItems() {
 		ArrayList<Item> itemList = new ArrayList<>();
@@ -53,6 +66,10 @@ public class DataLoaderFromDatabase implements DataLoader {
 		return itemList;
 	}
 
+	/**
+	 * Loads saleItems into a map where the sale code is the key and a list of all
+	 * items in that sale is the value of that key.
+	 */
 	@Override
 	public Map<String, ArrayList<String>> loadSaleItemsMap() {
 		Map<String, ArrayList<String>> saleItemsMap = new HashMap<String, ArrayList<String>>();
@@ -63,7 +80,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
 
 			String query = "select saleCode, itemCode from SaleItem " + "join Sale on SaleItem.saleId = Sale.saleId"
-					+ "join Item on SaleItem.itemId = Item.itemId";
+					+ " join Item on SaleItem.itemId = Item.itemId";
 			PreparedStatement psSaleItem = conn.prepareStatement(query);
 			ResultSet rsSaleItem = psSaleItem.executeQuery();
 			while (rsSaleItem.next()) {
@@ -81,6 +98,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+		System.out.println(saleItemsMap);
 		return saleItemsMap;
 	}
 
@@ -93,10 +111,49 @@ public class DataLoaderFromDatabase implements DataLoader {
 
 	@Override
 	public ArrayList<Store> loadStores(ArrayList<Person> personList) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Store> storeList = new ArrayList<Store>();
+
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+
+			String query = "select storeCode, managerId, a.street," + " a.zip, a.city, a.state, storeId"
+					+ " from Store join Address as a" + " on Store.addressId = a.addressId";
+			PreparedStatement psStore = conn.prepareStatement(query);
+			ResultSet rsStore = psStore.executeQuery();
+
+			while (rsStore.next()) {
+				String storeCode = rsStore.getString(1);
+				int managerId = rsStore.getInt(2);
+				Person manager = null;
+				for (Person p : personList) {
+					if (managerId == p.getPersonId()) {
+						manager = p;
+					}
+				}
+				String street = rsStore.getString(3);
+				int zipcode = rsStore.getInt(4);
+				String city = rsStore.getString(5);
+				String state = rsStore.getString(6);
+				int storeId = rsStore.getInt(7);
+				Address a = new Address(street, city, state, zipcode);
+				Store s = new Store(storeCode, manager, a, storeId);
+				storeList.add(s);
+			}
+
+			rsStore.close();
+			psStore.close();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return storeList;
 	}
 
+	/**
+	 * Loads persons from database. Loads emails as well and puts them into a list
+	 * in the person object.
+	 */
 	@Override
 	public ArrayList<Person> loadPersons() {
 		ArrayList<Person> personList = new ArrayList<Person>();
@@ -106,9 +163,9 @@ public class DataLoaderFromDatabase implements DataLoader {
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
 
-			String query = "select firstName, lastName, Address.street, Address.zip, "
-					+ "Address.city, Address.state, uuid, personId from Person "
-					+ "join Address on Person.addressId = Address.addressId";
+			String query = "select firstName, lastName, a.street, a.zip, "
+					+ "a.city, a.state, uuid, personId from Person "
+					+ "join Address as a on Person.addressId = a.addressId";
 			PreparedStatement psPerson = conn.prepareStatement(query);
 			ResultSet rsPerson = psPerson.executeQuery();
 
@@ -127,7 +184,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 				PreparedStatement psEmail = conn.prepareStatement(emailQuery);
 				psEmail.setInt(1, personId);
 				ResultSet rsEmail = psEmail.executeQuery();
-				
+
 				while (rsEmail.next()) {
 					emails.add(rsEmail.getString(1));
 				}
@@ -145,7 +202,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		return null;
+		return personList;
 	}
 
 	@Override

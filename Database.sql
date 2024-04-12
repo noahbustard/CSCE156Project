@@ -122,7 +122,6 @@ insert into Store (storeId,storeCode,addressId, managerId) values (2,"3c0234",2,
 insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (1,"s001","2023-12-01",2,1,4);
 insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (2,"s002","2023-11-03",2,2,4);
 insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (3,"s003","2023-11-15",1,1,5);
-insert into Sale (saleId,saleCode,date,storeId,customerId,salespersonId) values (4,"s004","2023-11-15",1,5,5);
 
 insert into SaleItem (saleItemId,itemId,saleId) values (1,1,1);
 insert into SaleItem (saleItemId,startDate,endDate,itemId,saleId) values (2,"2023-01-01","2025-12-25",2,2);
@@ -131,7 +130,6 @@ insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (4,150.0,6,1
 insert into SaleItem (saleItemId,phoneNumber,daysPurchased,itemId,saleId) values (5,"402-472-2401",95,7,2);
 insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (6,10.0,6,1);
 insert into SaleItem (saleItemId,gbsPurchased,itemId,saleId) values (7,25.5,6,2);
-insert into SaleItem (saleItemId,itemId,saleId) values (8,2,4);
 
 insert into Email (emailId, address, personId) values (1,"edriffill0@timesonline.co.uk",1);
 insert into Email (emailId, address, personId) values (2,"sbowerman1@reuters.com",2);

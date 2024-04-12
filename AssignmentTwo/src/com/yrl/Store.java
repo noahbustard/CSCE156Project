@@ -18,6 +18,14 @@ public class Store {
 	private String storeCode;
 	private Person manager;
 	private Address address;
+	private int storeId;
+
+	public Store(String storeCode, Person manager, Address address, int storeId) {
+		this.storeCode = storeCode;
+		this.manager = manager;
+		this.address = address;
+		this.storeId = storeId;
+	}
 
 	public Store(String storeCode, Person manager, Address address) {
 		this.storeCode = storeCode;
@@ -71,12 +79,12 @@ public class Store {
 
 	public void generateStoreReport(List<Sale> saleList) {
 		double total = 0.0;
-		//TODO: create total variable
-			
-				
-			
-		System.out.printf("%-10s %-30s %-10d %-15f\n",
-				this.getStoreCode(), this.getManager(), saleList.size(), total);
-		}
+		// TODO: create total variable
+
+		System.out.printf("%-10s %-30s %-10d %-15f\n", this.getStoreCode(), this.getManager(), saleList.size(), total);
 	}
 
+	public int getStoreId() {
+		return storeId;
+	}
+}
