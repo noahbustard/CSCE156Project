@@ -10,30 +10,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class DataLoaderFromDatabase implements DataLoader{
+public class DataLoaderFromDatabase implements DataLoader {
 
 	@Override
 	public ArrayList<Item> loadItems() {
 		ArrayList<Item> itemList = new ArrayList<>();
 		Item i = null;
-		
+
 		Connection conn = null;
 
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
-			
-			String query = "select  i.type, i.itemCode,"
-					+ " i.name, i.baseCost,"
-					+ " i.itemId from Item as i";
+
+			String query = "select  i.type, i.itemCode," + " i.name, i.baseCost," + " i.itemId from Item as i";
 			PreparedStatement psItem = conn.prepareStatement(query);
 			ResultSet rsItem = psItem.executeQuery();
 			while (rsItem.next()) {
-			String type = rsItem.getString(1);
-			String itemCode = rsItem.getString(2);
-			String itemName = rsItem.getString(3);
-			Double price = rsItem.getDouble(4);
-			int itemId = rsItem.getInt(5);
+				String type = rsItem.getString(1);
+				String itemCode = rsItem.getString(2);
+				String itemName = rsItem.getString(3);
+				Double price = rsItem.getDouble(4);
+				int itemId = rsItem.getInt(5);
 				if (type.equals("P")) {
 					i = new Purchase(itemCode, itemName, price, itemId);
 				} else if (type.equals("S")) {
@@ -59,14 +56,13 @@ public class DataLoaderFromDatabase implements DataLoader{
 	@Override
 	public Map<String, ArrayList<String>> loadSaleItemsMap() {
 		Map<String, ArrayList<String>> saleItemsMap = new HashMap<String, ArrayList<String>>();
-		
+
 		Connection conn = null;
-		
+
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
-			
-			String query = "select saleCode, itemCode from SaleItem "
-					+ "join Sale on SaleItem.saleId = Sale.saleId"
+
+			String query = "select saleCode, itemCode from SaleItem " + "join Sale on SaleItem.saleId = Sale.saleId"
 					+ "join Item on SaleItem.itemId = Item.itemId";
 			PreparedStatement psSaleItem = conn.prepareStatement(query);
 			ResultSet rsSaleItem = psSaleItem.executeQuery();
@@ -77,7 +73,7 @@ public class DataLoaderFromDatabase implements DataLoader{
 					saleItemsMap.put(saleCode, new ArrayList<String>());
 				}
 				saleItemsMap.get(saleCode).add(itemCode);
-				
+
 			}
 			rsSaleItem.close();
 			psSaleItem.close();
@@ -106,15 +102,16 @@ public class DataLoaderFromDatabase implements DataLoader{
 		ArrayList<Person> personList = new ArrayList<Person>();
 
 		Connection conn = null;
-		
+
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
-			
-			String query = "select firstName, lastName, Address.street, Address.street, "
+
+			String query = "select firstName, lastName, Address.street, Address.zip, "
 					+ "Address.city, Address.state, uuid, personId from Person "
 					+ "join Address on Person.addressId = Address.addressId";
 			PreparedStatement psPerson = conn.prepareStatement(query);
 			ResultSet rsPerson = psPerson.executeQuery();
+
 			while (rsPerson.next()) {
 				List<String> emails = new ArrayList<>();
 				String firstName = rsPerson.getString(1);
@@ -125,17 +122,20 @@ public class DataLoaderFromDatabase implements DataLoader{
 				String state = rsPerson.getString(6);
 				String uuid = rsPerson.getString(7);
 				int personId = rsPerson.getInt(8);
-				
+
 				String emailQuery = "select address from Email where personId = ?";
 				PreparedStatement psEmail = conn.prepareStatement(emailQuery);
 				psEmail.setInt(1, personId);
 				ResultSet rsEmail = psEmail.executeQuery();
+				
 				while (rsEmail.next()) {
 					emails.add(rsEmail.getString(1));
 				}
-				
+				rsEmail.close();
+				psEmail.close();
+
 				Address a = new Address(street, city, state, zipcode);
-				Person p = new Person(uuid,firstName,lastName,a,emails,personId);
+				Person p = new Person(uuid, firstName, lastName, a, emails, personId);
 				personList.add(p);
 
 			}
