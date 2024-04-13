@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Class loads data from a database that is formatted into lists, arraylists,
  * and maps to be later processed into reports.
@@ -22,6 +25,8 @@ import java.util.Map;
  */
 public class DataLoaderFromDatabase implements DataLoader {
 
+	private static Logger dataLoaderDatabaseLogger = LogManager.getLogger(DataLoaderFromDatabase.class.getName());
+
 	/**
 	 * Loads items from a database. Loads the item based on the type which is
 	 * identified from the database type variable.
@@ -32,7 +37,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 		Item i = null;
 
 		Connection conn = null;
-
+		dataLoaderDatabaseLogger.info("loadItems connection successful");
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
 
@@ -56,12 +61,18 @@ public class DataLoaderFromDatabase implements DataLoader {
 				}
 				if (i != null) {
 					itemList.add(i);
+					dataLoaderDatabaseLogger.info("item loaded successfully");
+
+				} else {
+					dataLoaderDatabaseLogger.info("item loading failed");
+
 				}
 			}
 			rsItem.close();
 			psItem.close();
 			conn.close();
 		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadItems connection unsuccessful");
 			throw new RuntimeException(e);
 		}
 		return itemList;
@@ -79,6 +90,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+			dataLoaderDatabaseLogger.info("loadSaleItemsMap connection successful");
 
 			String query = "select saleCode, itemCode from SaleItem " + "join Sale on SaleItem.saleId = Sale.saleId"
 					+ " join Item on SaleItem.itemId = Item.itemId";
@@ -91,12 +103,14 @@ public class DataLoaderFromDatabase implements DataLoader {
 					saleItemsMap.put(saleCode, new ArrayList<String>());
 				}
 				saleItemsMap.get(saleCode).add(itemCode);
+				dataLoaderDatabaseLogger.info("saleItemMap loaded successfully");
 
 			}
 			rsSaleItem.close();
 			psSaleItem.close();
 			conn.close();
 		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadSaleItemsMap connection unsuccessful");
 			throw new RuntimeException(e);
 		}
 		return saleItemsMap;
@@ -115,6 +129,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 			saleItemsMap.put(entry.getValue(), new ArrayList<Item>());
 		}
 		Connection conn = null;
+		dataLoaderDatabaseLogger.info("loadSaleItems connection successful");
 
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
@@ -156,17 +171,18 @@ public class DataLoaderFromDatabase implements DataLoader {
 					}
 				} else if (rsSaleItem.getString(6) != null) {
 					Double gbsPurchased = rsSaleItem.getDouble(6);
-					saleItemsMap.get(sale).add(new DataPlan(item.getItemCode(), item.getName(), itemId, 
-							gbsPurchased, item.getBaseCost(), saleItemId));
+					saleItemsMap.get(sale).add(new DataPlan(item.getItemCode(), item.getName(), itemId, gbsPurchased,
+							item.getBaseCost(), saleItemId));
 				} else if (rsSaleItem.getString(7) != null) {
 					String phoneNumber = rsSaleItem.getString(7);
 					int daysPurchased = rsSaleItem.getInt(8);
-					saleItemsMap.get(sale).add(new VoicePlan(item.getItemCode(), item.getName(), itemId, 
-							phoneNumber, daysPurchased, item.getBaseCost(), saleItemId));
+					saleItemsMap.get(sale).add(new VoicePlan(item.getItemCode(), item.getName(), itemId, phoneNumber,
+							daysPurchased, item.getBaseCost(), saleItemId));
 				} else {
-					saleItemsMap.get(sale).add(new Purchase(item.getItemCode(), item.getName(), itemId, 
-							item.getBaseCost(), saleItemId));
+					saleItemsMap.get(sale).add(
+							new Purchase(item.getItemCode(), item.getName(), itemId, item.getBaseCost(), saleItemId));
 				}
+				dataLoaderDatabaseLogger.info("saleItem loaded successfully");
 
 			}
 
@@ -174,13 +190,14 @@ public class DataLoaderFromDatabase implements DataLoader {
 			psSaleItem.close();
 			conn.close();
 		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadSaleItems connection unsuccessful");
 			throw new RuntimeException(e);
 		}
 		return saleItemsMap;
 	}
 
 	/**
-	 * Loads stores from a database and puts them into a list. Accesses managaer via
+	 * Loads stores from a database and puts them into a list. Accesses manager via
 	 * Person Id and the PersonList as a parameter.
 	 */
 	@Override
@@ -190,6 +207,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+			dataLoaderDatabaseLogger.info("loadStores connection successful");
 
 			String query = "select storeCode, managerId, a.street," + " a.zip, a.city, a.state, storeId"
 					+ " from Store join Address as a" + " on Store.addressId = a.addressId";
@@ -213,12 +231,15 @@ public class DataLoaderFromDatabase implements DataLoader {
 				Address a = new Address(street, city, state, zipcode);
 				Store s = new Store(storeCode, manager, a, storeId);
 				storeList.add(s);
+				dataLoaderDatabaseLogger.info("store loaded successfully");
+
 			}
 
 			rsStore.close();
 			psStore.close();
 			conn.close();
 		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadStores connection unsuccessful");
 			throw new RuntimeException(e);
 		}
 		return storeList;
@@ -236,6 +257,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+			dataLoaderDatabaseLogger.info("loadPersons connection successful");
 
 			String query = "select firstName, lastName, a.street, a.zip, "
 					+ "a.city, a.state, uuid, personId from Person "
@@ -268,12 +290,13 @@ public class DataLoaderFromDatabase implements DataLoader {
 				Address a = new Address(street, city, state, zipcode);
 				Person p = new Person(uuid, firstName, lastName, a, emails, personId);
 				personList.add(p);
-
+				dataLoaderDatabaseLogger.info("person loaded successfully");
 			}
 			rsPerson.close();
 			psPerson.close();
 			conn.close();
 		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadPersons connection unsuccessful");
 			throw new RuntimeException(e);
 		}
 		return personList;
@@ -292,6 +315,7 @@ public class DataLoaderFromDatabase implements DataLoader {
 
 		try {
 			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+			dataLoaderDatabaseLogger.info("loadSales connection successful");
 
 			String query = "select saleCode, s.storeId, customerId, salespersonId, "
 					+ "date, saleId from Sale join Store as s on Sale.storeId = s.storeId";
@@ -321,11 +345,14 @@ public class DataLoaderFromDatabase implements DataLoader {
 					}
 				}
 				saleMap.put(saleCode, new Sale(saleCode, store, customer, salesperson, date, saleId));
+				dataLoaderDatabaseLogger.info("sale loaded successfully");
+
 			}
 			rsSale.close();
 			psSale.close();
 			conn.close();
 		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadSales connection unsuccessful");
 			throw new RuntimeException(e);
 		}
 		return saleMap;
