@@ -143,6 +143,3 @@ insert into Email (emailId, address, personId) values (7,"vlynes6@thetimes.co.uk
 insert into Email (emailId, address, personId) values (8,"omitrovic7@freewebs.com",8);
 insert into Email (emailId, address, personId) values (9,"tmcconville8@ifeng.com",9);
 insert into Email (emailId, address, personId) values (10,"pparmby9@drupal.org",10);
-
-
-select saleItemId, startDate, endDate, hoursBilled, servicemanId, gbsPurchased, phoneNumber, daysPurchased, itemId, saleId from SaleItem

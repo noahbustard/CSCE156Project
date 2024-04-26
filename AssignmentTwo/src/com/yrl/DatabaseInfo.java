@@ -1,5 +1,8 @@
 package com.yrl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Database connection configuration 
  */
@@ -30,5 +33,9 @@ public class DatabaseInfo {
 	 * Fully formatted URL for a JDBC connection
 	 */
 	public static final String URL = String.format("jdbc:mysql://%s/%s?%s", SERVER, USERNAME, PARAMETERS);
+	
+	public static final ArrayList<String> TABLELIST = new ArrayList<>(Arrays.asList("Email", "SaleItem", "Item", 
+			"Sale", "Store", "Person", "Address"));
+
 
 }
