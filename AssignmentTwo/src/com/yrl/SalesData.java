@@ -46,6 +46,7 @@ public class SalesData {
 	public static void addPerson(String personUuid, String firstName, String lastName, String street, String city,
 			String state, String zip) {
 		try {
+
 			Connection conn = ConnectionFactory.getConnection();
 			int addressId = addAddress(street, city, state, zip);
 
@@ -55,6 +56,7 @@ public class SalesData {
 			psAddPerson.setString(2, firstName);
 			psAddPerson.setString(3, lastName);
 			psAddPerson.setInt(4, addressId);
+			psAddPerson.executeUpdate();
 			
 
 			psAddPerson.close();
@@ -75,9 +77,11 @@ public class SalesData {
 	 */
 	public static void addEmail(String personUuid, String email) {
 	    try {
-	        Connection conn = ConnectionFactory.getConnection();
 
-	        String addEmail = "insert into Email (address, personId) values (?, (SELECT personId from Person where uuid = ?))";
+	        Connection conn = ConnectionFactory.getConnection();
+	        
+
+	        String addEmail = "insert into Email (address, personId) values (?, (select personId from Person where uuid = ?))";
 	        PreparedStatement psAddEmail = conn.prepareStatement(addEmail);
 	        psAddEmail.setString(1, email);
 	        psAddEmail.setString(2, personUuid);
@@ -107,7 +111,7 @@ public class SalesData {
 		try {
 			Connection conn = ConnectionFactory.getConnection();
 			int addressId = addAddress(street, city, state, zip);
-			String addStore = "insert into Store (storeCode,addressId, managerId) values (?, ?, (select personId from Person where uuid = ?)))";
+			String addStore = "insert into Store (storeCode,addressId, managerId) values (?, ?, (select personId from Person where uuid = ?))";
 			PreparedStatement psAddStore = conn.prepareStatement(addStore);
 			psAddStore.setString(1, storeCode);
 			psAddStore.setInt(2, addressId);
@@ -169,7 +173,7 @@ public class SalesData {
 			String addSale = "insert into Sale (saleCode,date,storeId,customerId,salespersonId) values "
 					+ "(?, ?, (select storeId from Store where storeCode = ?),"
 					+ " (select personId from Person where uuid = ?), "
-					+ "(select personId from Person where uuid = ?)";
+					+ "(select personId from Person where uuid = ?))";
 			PreparedStatement psAddSale = conn.prepareStatement(addSale);
 			psAddSale.setString(1, saleCode);
 			psAddSale.setString(2, saleDate);
@@ -224,7 +228,7 @@ public class SalesData {
 	public static void addLeaseToSale(String saleCode, String itemCode, String startDate, String endDate) {
 		try {
 			Connection conn = ConnectionFactory.getConnection();
-			String addLeaseToSale = "insert into SaleItem (startDate,endDate,itemId,saleId) values (?, ?, (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?)) ";
+			String addLeaseToSale = "insert into SaleItem (startDate,endDate,itemId,saleId) values (?, ?, (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?))";
 			PreparedStatement psAddLeaseToSale = conn.prepareStatement(addLeaseToSale);
 			psAddLeaseToSale.setString(1, startDate);
 			psAddLeaseToSale.setString(2, endDate);
@@ -256,7 +260,7 @@ public class SalesData {
 			String servicePersonUuid) {
 		try {
 			Connection conn = ConnectionFactory.getConnection();
-			String addServiceToSale = "insert into SaleItem (hoursBilled,servicemanId,itemId,saleId) values (?, (select personId from Person where uuid = ?), (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?)) ";
+			String addServiceToSale = "insert into SaleItem (hoursBilled,servicemanId,itemId,saleId) values (?, (select personId from Person where uuid = ?), (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?))";
 			PreparedStatement psAddServiceToSale = conn.prepareStatement(addServiceToSale);
 			psAddServiceToSale.setDouble(1, billedHours);
 			psAddServiceToSale.setString(2, servicePersonUuid);
@@ -285,7 +289,7 @@ public class SalesData {
 	public static void addDataPlanToSale(String saleCode, String itemCode, double gbs) {
 		try {
 			Connection conn = ConnectionFactory.getConnection();
-			String addDataPlanToSale = "insert into SaleItem (gbsPurchased,itemId,saleId) values (?, (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?)) ";
+			String addDataPlanToSale = "insert into SaleItem (gbsPurchased,itemId,saleId) values (?, (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?))";
 			PreparedStatement psAddDataPlanToSale = conn.prepareStatement(addDataPlanToSale);
 			psAddDataPlanToSale.setDouble(1, gbs);
 			psAddDataPlanToSale.setString(2, itemCode);
@@ -315,10 +319,10 @@ public class SalesData {
 	public static void addVoicePlanToSale(String saleCode, String itemCode, String phoneNumber, int days) {
 		try {
 			Connection conn = ConnectionFactory.getConnection();
-			String addVoicePlanToSale = "insert into SaleItem (phoneNumber,daysPurchased,itemId,saleId) values (?, ?, (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?)) ";
+			String addVoicePlanToSale = "insert into SaleItem (phoneNumber,daysPurchased,itemId,saleId) values (?, ?, (select itemId from Item where itemCode = ?), (select saleId from Sale where saleCode = ?))";
 			PreparedStatement psAddVoicePlanToSale = conn.prepareStatement(addVoicePlanToSale);
 			psAddVoicePlanToSale.setString(1, phoneNumber);
-			psAddVoicePlanToSale.setInt(1, days);
+			psAddVoicePlanToSale.setInt(2, days);
 			psAddVoicePlanToSale.setString(3, itemCode);
 			psAddVoicePlanToSale.setString(4, saleCode);
 
@@ -365,5 +369,4 @@ public class SalesData {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

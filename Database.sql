@@ -14,9 +14,9 @@ drop table if exists Address;
 
 create table Address (
 addressId int not null primary key auto_increment,
-street varchar(40) not null,
-city varchar(40) not null,
-state varchar(2) not null,
+street varchar(256) not null,
+city varchar(256) not null,
+state varchar(20) not null,
 zip int not null
 );
 
@@ -31,7 +31,7 @@ foreign key (addressId) references Address(addressId)
 
 create table Store (
 storeId int not null primary key auto_increment,
-storeCode varchar(6) not null unique,
+storeCode varchar(256) not null unique,
 addressId int not null,
 managerId int not null,
 foreign key (addressId) references Address(addressId),
@@ -40,7 +40,7 @@ foreign key (managerId) references Person(personId)
 
 create table Sale (
 saleId int not null primary key auto_increment,
-saleCode varchar(4) not null unique,
+saleCode varchar(256) not null unique,
 date varchar(10) not null,
 storeId int not null,
 customerId int not null,
@@ -52,7 +52,7 @@ foreign key (salespersonId) references Person(personId)
 
 create table Item(
 itemId int not null primary key auto_increment,
-itemCode varchar(4) not null unique,
+itemCode varchar(256) not null unique,
 baseCost double not null,
 type varchar(1) not null,
 name varchar(256) not null
