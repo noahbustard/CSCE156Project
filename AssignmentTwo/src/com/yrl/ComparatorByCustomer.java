@@ -2,7 +2,7 @@ package com.yrl;
 
 import java.util.Comparator;
 
-public class SortByCustomer implements Comparator<Sale>{
+public class ComparatorByCustomer implements Comparator<Sale>{
 
 	@Override
 	public int compare(Sale o1, Sale o2) {

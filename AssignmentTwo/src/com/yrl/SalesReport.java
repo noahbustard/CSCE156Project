@@ -220,6 +220,13 @@ public class SalesReport {
 		return;
 	}
 	
+	public static void generateSalesReport(SortedList<Sale> saleList) {
+		System.out.println("Sale       Store      Customer             Salesperson          Total     ");
+		for (Sale s: saleList) {
+			System.out.printf("%-11s%-10s %-21s%-21s$%10.2f\n", s.getSaleCode(), s.getStore().getStoreCode(), s.getCustomer().getFullName(), s.getSalesperson().getFullName(), s.getTotal());
+		}
+	}
+	
 	public static void main(String[] args) {
 
 		DataLoaderFromDatabase db = new DataLoaderFromDatabase();
@@ -234,19 +241,22 @@ public class SalesReport {
 		Map<String, Sale> saleMap = db.loadSales(personList, storeList, itemInfoMap);
 		Map<Sale, ArrayList<Item>> saleItemsMap = db.loadSaleItems(personList, itemInfoMap, saleMap,
 				saleCodeItemCodeMap);
-		Map<Store, ArrayList<Sale>> storeMap = Store.createStoreMap(saleMap, storeList);
-
+		SortedList<Sale> saleListByCustomer = db.loadSales(personList, storeList, itemInfoMap, saleItemsMap, Sale.COMPARE_BY_CUSTOMER);
+		SortedList<Sale> saleListByTotal = db.loadSales(personList, storeList, itemInfoMap, saleItemsMap, Sale.COMPARE_BY_TOTAL);
+		SortedList<Sale> saleListByStore = db.loadSales(personList, storeList, itemInfoMap, saleItemsMap, Sale.COMPARE_BY_STORE);
 		
-		Comparator<Sale> com = new SortByCustomer();
-		SortedList<Sale> myList = new SortedList<>(com);
-		myList.add(saleMap.get("s002"));
-		myList.add(saleMap.get("s003"));
-		myList.add(saleMap.get("s005"));
-		myList.add(saleMap.get("s004"));
-		
-		//SalesReport.generateReportByTotal(saleItemsMap);
-		//SalesReport.generateReportByStore(saleItemsMap, storeMap);
-		//SalesReport.generateReportByItem(saleItemsMap);
+		System.out.println("+-------------------------------------------------------------------------+\n"
+				+ "| Sales by Customer                                                       |\n"
+				+ "+-------------------------------------------------------------------------+");
+		generateSalesReport(saleListByCustomer);
+		System.out.println("+-------------------------------------------------------------------------+\n"
+				+ "| Sales by Total                                                          |\n"
+				+ "+-------------------------------------------------------------------------+");
+		generateSalesReport(saleListByTotal);
+		System.out.println("+-------------------------------------------------------------------------+\n"
+				+ "| Sales by Store                                                          |\n"
+				+ "+-------------------------------------------------------------------------+");
+		generateSalesReport(saleListByStore);
 		
 		
 		

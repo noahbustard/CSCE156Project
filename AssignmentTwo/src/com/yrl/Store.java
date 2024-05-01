@@ -2,7 +2,6 @@ package com.yrl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,13 +74,6 @@ public class Store {
 			storeMap.get(store).add(entry.getValue());
 		}
 		return storeMap;
-	}
-
-	public void generateStoreReport(List<Sale> saleList) {
-		double total = 0.0;
-		// TODO: create total variable
-
-		System.out.printf("%-10s %-30s %-10d %-15f\n", this.getStoreCode(), this.getManager(), saleList.size(), total);
 	}
 
 	public int getStoreId() {

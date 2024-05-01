@@ -1,6 +1,7 @@
 package com.yrl;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 /**
  * @author Noah Bustard
@@ -19,6 +20,32 @@ public class Sale {
 	private Person salesperson;
 	private LocalDate date;
 	private int saleId;
+	private Double total;
+
+	public static final Comparator<Sale> COMPARE_BY_CUSTOMER = (o1, o2) -> {
+		String p1First = o1.getCustomer().getFirstName();
+		String p1Last = o1.getCustomer().getLastName();
+		String p2First = o2.getCustomer().getFirstName();
+		String p2Last = o2.getCustomer().getLastName();
+		int lastNameComp = p1Last.compareToIgnoreCase(p2Last);
+		int firstNameComp = p1First.compareToIgnoreCase(p2First);
+		if (lastNameComp == 0) {
+			if (firstNameComp == 0) {
+				return Double.compare(o2.getTotal(), o1.getTotal());
+			} else {
+				return firstNameComp;
+			}
+		} else {
+			return lastNameComp;
+		}
+	};
+    public static final Comparator<Sale> COMPARE_BY_TOTAL = Comparator.comparing(Sale::getTotal).reversed()
+            .thenComparing(COMPARE_BY_CUSTOMER);
+    
+    public static final Comparator<Sale> COMPARE_BY_STORE = Comparator
+            .comparing((Sale sale) -> sale.getStore().getStoreCode(), String.CASE_INSENSITIVE_ORDER)
+            .thenComparing(COMPARE_BY_TOTAL);
+
 
 	public Sale(String saleCode, Store store, Person customer, Person salesperson, LocalDate date, int saleId) {
 		this.saleCode = saleCode;
@@ -35,6 +62,17 @@ public class Sale {
 		this.customer = customer;
 		this.salesperson = salesperson;
 		this.date = date;
+	}
+
+	public Sale(String saleCode, Store store, Person customer, Person salesperson, LocalDate date, int saleId,
+			double total) {
+		this.saleCode = saleCode;
+		this.store = store;
+		this.customer = customer;
+		this.salesperson = salesperson;
+		this.date = date;
+		this.saleId = saleId;
+		this.total = total;
 	}
 
 	public String getSaleCode() {
@@ -78,4 +116,7 @@ public class Sale {
 		return saleId;
 	}
 
+	public Double getTotal() {
+		return total;
+	}
 }

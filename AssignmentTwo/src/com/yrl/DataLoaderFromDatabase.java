@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -356,6 +357,75 @@ public class DataLoaderFromDatabase implements DataLoader {
 			throw new RuntimeException(e);
 		}
 		return saleMap;
+	}
+
+	public SortedList<Sale> loadSales(ArrayList<Person> personList, ArrayList<Store> storeList,
+			Map<String, Item> itemInfoMap, Map<Sale, ArrayList<Item>> saleItemsMap, Comparator<Sale> comp) {
+		SortedList<Sale> saleList = new SortedList<>(comp);
+
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(DatabaseInfo.URL, DatabaseInfo.USERNAME, DatabaseInfo.PASSWORD);
+			dataLoaderDatabaseLogger.info("loadSales connection successful");
+
+			String query = "select saleCode, s.storeId, customerId, salespersonId, "
+					+ "date, saleId from Sale join Store as s on Sale.storeId = s.storeId";
+			PreparedStatement psSale = conn.prepareStatement(query);
+			ResultSet rsSale = psSale.executeQuery();
+
+			while (rsSale.next()) {
+				String saleCode = rsSale.getString(1);
+				int storeId = rsSale.getInt(2);
+				int customerId = rsSale.getInt(3);
+				int salespersonId = rsSale.getInt(4);
+				LocalDate date = LocalDate.parse(rsSale.getString(5));
+				int saleId = rsSale.getInt(6);
+				Person salesperson = null;
+				Person customer = null;
+				Store store = null;
+				for (Person p : personList) {
+					if (customerId == p.getPersonId()) {
+						customer = p;
+					} else if (salespersonId == p.getPersonId()) {
+						salesperson = p;
+					}
+				}
+				for (Store s : storeList) {
+					if (storeId == s.getStoreId()) {
+						store = s;
+					}
+				}
+				Double total = 0.0;
+				for (Map.Entry<Sale, ArrayList<Item>> entry : saleItemsMap.entrySet()) {
+					Sale sale = entry.getKey();
+				    if (sale.getSaleCode().equals(saleCode)) {
+				        ArrayList<Item> itemList = entry.getValue();
+
+				        Double tax = 0.0;
+				        Double subtotal = 0.0;
+
+				        for (Item item : itemList) {
+				            subtotal += Math.round(item.getCost() * 100.0) / 100.0;
+				            tax += Math.round(item.getTax() * 100.0) / 100.0;
+				        }
+
+				        total = subtotal + tax;
+				        break;
+				    }
+				}
+				saleList.add(new Sale(saleCode, store, customer, salesperson, date, saleId, total));
+				dataLoaderDatabaseLogger.info("sale loaded successfully");
+
+			}
+			rsSale.close();
+			psSale.close();
+			conn.close();
+		} catch (SQLException e) {
+			dataLoaderDatabaseLogger.info("loadSales connection unsuccessful");
+			throw new RuntimeException(e);
+		}
+		return saleList;
 	}
 
 }

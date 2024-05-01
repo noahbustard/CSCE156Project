@@ -3,12 +3,12 @@ package com.yrl;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class SortedList<T> implements Iterable<T>{
+public class SortedList<T> implements Iterable<T> {
 
 	private Node<T> head;
 	private int size;
 	private Comparator<T> com;
-	
+
 	public SortedList(Comparator<T> com) {
 		this.head = null;
 		this.size = 0;
@@ -22,23 +22,25 @@ public class SortedList<T> implements Iterable<T>{
 			this.size++;
 			return;
 		}
-		
-		Node<T> curr = this.head;
-		Node<T> prev = null;
-		while (this.com.compare(newNode.getElement(), curr.getElement()) > 0) {
-			prev = curr;
-			curr = curr.getNext();
-		}
-		if (prev == null) {
-			newNode.setNext(this.head);
-			this.head = newNode;
-		} else {
-			prev.setNext(newNode);
 
+		 Node<T> prev = null;
+		 Node<T> curr = this.head;
+		    
+		 while (curr != null && com.compare(element, curr.getElement()) > 0) {
+			 prev = curr;
+			 curr = curr.getNext();
+		 }
+		    
+		 if (prev == null) {
+			 newNode.setNext(this.head);
+			 this.head = newNode;
+		 } else {
+			 prev.setNext(newNode);
+			 newNode.setNext(curr);
+		 }
+		    
+		    this.size++;
 		}
-		this.size++;
-
-	}
 
 	public Node<T> remove(int index) {
 		if (this.boundsCheck(index) == false) {
@@ -76,22 +78,22 @@ public class SortedList<T> implements Iterable<T>{
 	public boolean isEmpty() {
 		return (this.size == 0);
 	}
-	
+
 	public boolean boundsCheck(int index) {
 		if (index >= this.size | index < 0) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public int getSize() {
 		return this.size;
 	}
-	
+
 	public Node<T> getHead() {
 		return this.head;
 	}
-	
+
 	public String toString() {
 		if (this.isEmpty()) {
 			return "[empty]";
@@ -106,7 +108,7 @@ public class SortedList<T> implements Iterable<T>{
 		}
 		sb.append(curr.getElement());
 		sb.append(" ]");
-		
+
 		return sb.toString();
 	}
 
@@ -116,4 +118,3 @@ public class SortedList<T> implements Iterable<T>{
 		return new ListIterator<T>(this);
 	}
 }
-
