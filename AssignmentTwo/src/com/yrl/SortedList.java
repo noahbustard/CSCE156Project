@@ -1,15 +1,18 @@
 package com.yrl;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class SortedList<T> implements Iterable<T>{
 
 	private Node<T> head;
 	private int size;
-
-	public SortedList() {
+	private Comparator<T> com;
+	
+	public SortedList(Comparator<T> com) {
 		this.head = null;
 		this.size = 0;
+		this.com = com;
 	}
 
 	public void add(T element) {
@@ -19,11 +22,20 @@ public class SortedList<T> implements Iterable<T>{
 			this.size++;
 			return;
 		}
+		
 		Node<T> curr = this.head;
-		while (curr.getNext() != null) {
+		Node<T> prev = null;
+		while (this.com.compare(newNode.getElement(), curr.getElement()) > 0) {
+			prev = curr;
 			curr = curr.getNext();
 		}
-		curr.setNext(newNode);
+		if (prev == null) {
+			newNode.setNext(this.head);
+			this.head = newNode;
+		} else {
+			prev.setNext(newNode);
+
+		}
 		this.size++;
 
 	}
@@ -37,7 +49,7 @@ public class SortedList<T> implements Iterable<T>{
 		if (index == 0) {
 			curr = this.head;
 		} else {
-			prev = this.iterateToIndex(index - 1);
+			prev = this.getNode(index - 1);
 			curr = prev.getNext();
 		}
 		if (index == 0) {
@@ -54,8 +66,11 @@ public class SortedList<T> implements Iterable<T>{
 		if (this.boundsCheck(index) == false) {
 			return null;
 		}
-		Node<T> element = this.iterateToIndex(index);
-		return element;
+		Node<T> curr = this.head;
+		for (int i = 0; i < index; i++) {
+			curr = curr.getNext();
+		}
+		return curr;
 	}
 
 	public boolean isEmpty() {
@@ -67,14 +82,6 @@ public class SortedList<T> implements Iterable<T>{
 			return false;
 		}
 		return true;
-	}
-	
-	public Node<T> iterateToIndex(int index) {
-		Node<T> curr = this.head;
-		for (int i = 0; i < index; i++) {
-			curr = curr.getNext();
-		}
-		return curr;
 	}
 	
 	public int getSize() {

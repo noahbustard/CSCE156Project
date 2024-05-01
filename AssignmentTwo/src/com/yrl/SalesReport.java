@@ -236,9 +236,17 @@ public class SalesReport {
 				saleCodeItemCodeMap);
 		Map<Store, ArrayList<Sale>> storeMap = Store.createStoreMap(saleMap, storeList);
 
-		SalesReport.generateReportByTotal(saleItemsMap);
-		SalesReport.generateReportByStore(saleItemsMap, storeMap);
-		SalesReport.generateReportByItem(saleItemsMap);
+		
+		Comparator<Sale> com = new SortByCustomer();
+		SortedList<Sale> myList = new SortedList<>(com);
+		myList.add(saleMap.get("s002"));
+		myList.add(saleMap.get("s003"));
+		myList.add(saleMap.get("s005"));
+		myList.add(saleMap.get("s004"));
+		
+		//SalesReport.generateReportByTotal(saleItemsMap);
+		//SalesReport.generateReportByStore(saleItemsMap, storeMap);
+		//SalesReport.generateReportByItem(saleItemsMap);
 		
 		
 		
