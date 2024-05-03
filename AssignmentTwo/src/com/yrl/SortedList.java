@@ -3,6 +3,12 @@ package com.yrl;
 import java.util.Comparator;
 import java.util.Iterator;
 
+/**
+ * Implementation of a sorted linked list. A comparator is required when creating a new instance.
+ * When objects are added they are put where they belong based on the comparator used. 
+ * The list implements iterable so that it may be used in enhanced for loops.
+ * @param <T>
+ */
 public class SortedList<T> implements Iterable<T> {
 
 	private Node<T> head;
@@ -15,6 +21,28 @@ public class SortedList<T> implements Iterable<T> {
 		this.com = com;
 	}
 
+	public class ListIterator implements Iterator<T>{
+		
+		Node<T> curr;
+		
+		public ListIterator(SortedList<T> list) {
+		
+			curr = list.head;	
+		}
+		
+		public boolean hasNext() {
+		
+			return curr != null;
+		}
+		
+		public T next() {
+		
+			T element = curr.getElement();
+			curr = curr.getNext();
+			return element;
+		}	
+	}
+	
 	public void add(T element) {
 		Node<T> newNode = new Node<>(element);
 		if (this.isEmpty()) {
@@ -79,7 +107,7 @@ public class SortedList<T> implements Iterable<T> {
 		return (this.size == 0);
 	}
 
-	public boolean boundsCheck(int index) {
+	private boolean boundsCheck(int index) {
 		if (index >= this.size | index < 0) {
 			return false;
 		}
@@ -88,10 +116,6 @@ public class SortedList<T> implements Iterable<T> {
 
 	public int getSize() {
 		return this.size;
-	}
-
-	public Node<T> getHead() {
-		return this.head;
 	}
 
 	public String toString() {
@@ -115,6 +139,6 @@ public class SortedList<T> implements Iterable<T> {
 	@Override
 	public Iterator<T> iterator() {
 
-		return new ListIterator<T>(this);
+		return new ListIterator(this);
 	}
 }

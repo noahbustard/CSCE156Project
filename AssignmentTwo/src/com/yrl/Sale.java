@@ -10,7 +10,7 @@ import java.util.Comparator;
  *         Date: 2024-03-07
  * 
  *         Sale class represents each individual sale that occurred from the
- *         data. Sales include their store, customer, and salesperson all as
+ *         data. Sales may include their store, customer, date, total and salesperson all as
  *         objects to allow for easy access to any information.
  */
 public class Sale {
@@ -23,13 +23,13 @@ public class Sale {
 	private Double total;
 
 	public static final Comparator<Sale> COMPARE_BY_CUSTOMER = (o1, o2) -> {
-		String p1First = o1.getCustomer().getFirstName();
 		String p1Last = o1.getCustomer().getLastName();
-		String p2First = o2.getCustomer().getFirstName();
 		String p2Last = o2.getCustomer().getLastName();
 		int lastNameComp = p1Last.compareToIgnoreCase(p2Last);
-		int firstNameComp = p1First.compareToIgnoreCase(p2First);
 		if (lastNameComp == 0) {
+			String p1First = o1.getCustomer().getFirstName();
+			String p2First = o2.getCustomer().getFirstName();
+			int firstNameComp = p1First.compareToIgnoreCase(p2First);
 			if (firstNameComp == 0) {
 				return Double.compare(o2.getTotal(), o1.getTotal());
 			} else {
@@ -39,12 +39,30 @@ public class Sale {
 			return lastNameComp;
 		}
 	};
-    public static final Comparator<Sale> COMPARE_BY_TOTAL = Comparator.comparing(Sale::getTotal).reversed()
-            .thenComparing(COMPARE_BY_CUSTOMER);
+    public static final Comparator<Sale> COMPARE_BY_TOTAL = (o1, o2) -> {
+    	double total1 = o1.getTotal();
+    	double total2 = o2.getTotal();
+    	return Double.compare(total2, total1);
+    };
     
-    public static final Comparator<Sale> COMPARE_BY_STORE = Comparator
-            .comparing((Sale sale) -> sale.getStore().getStoreCode(), String.CASE_INSENSITIVE_ORDER)
-            .thenComparing(COMPARE_BY_TOTAL);
+    public static final Comparator<Sale> COMPARE_BY_STORE = (o1, o2) -> {
+    	String storeCode1 = o1.getStore().getStoreCode();
+    	String storeCode2 = o2.getStore().getStoreCode();
+    	int storeCodeComp = storeCode1.compareToIgnoreCase(storeCode2);
+    	if (storeCodeComp == 0) {
+    		String p1Last = o1.getSalesperson().getLastName();
+    		String p2Last = o2.getSalesperson().getLastName();
+    		int lastNameComp = p1Last.compareToIgnoreCase(p2Last);
+    		if (lastNameComp == 0) {
+    			String p1First = o1.getSalesperson().getFirstName();
+    			String p2First = o2.getSalesperson().getFirstName();
+        		int firstNameComp = p1First.compareToIgnoreCase(p2First);
+        		return firstNameComp;
+    		}
+    		return lastNameComp;
+    	}
+    	return storeCodeComp;
+    };
 
 
 	public Sale(String saleCode, Store store, Person customer, Person salesperson, LocalDate date, int saleId) {

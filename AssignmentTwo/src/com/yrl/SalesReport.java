@@ -85,7 +85,7 @@ public class SalesReport {
 		return;
 	}
 	/**
-	 * Comparator for the list of Store Details. This is neccesary for sorting
+	 * Comparator for the list of Store Details. This is necessary for sorting
 	 * the stores in order of manager last name, then first name, and then store sale
 	 * total.
 	 * 
