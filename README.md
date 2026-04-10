@@ -36,7 +36,7 @@ CSCE156Project/
     └── src/
         └── com/
             └── yrl/
-                └── SalesData.java```
+                └── SalesData.java'''
 Tech Stack
 Java
 SQL
